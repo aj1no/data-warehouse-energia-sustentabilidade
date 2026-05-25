@@ -6,7 +6,7 @@ Medição gerada automaticamente por `run_all.py` a partir do dataset real da Ou
 
 | Consulta | Execuções | Melhor ms | Média ms | Linhas |
 |---|---:|---:|---:|---:|
-| Fato original | 7 | 8.725 | 9.764 | 261 |
-| Tabela agregada | 7 | 2.959 | 3.149 | 261 |
+| Fato original | 7 | 8.307 | 9.497 | 261 |
+| Tabela agregada | 7 | 2.607 | 3.878 | 261 |
 
-Ganho médio observado: 3.10x quando a consulta usa `dw.fact_energy_generation_annual_grouped`.
+Ganho médio observado: 2.45x quando a consulta usa `dw.fact_energy_generation_annual_grouped`.

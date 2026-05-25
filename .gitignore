@@ -3,15 +3,10 @@
 .tmp/
 __pycache__/
 *.pyc
+.vscode/
+*.log
 
-data/raw/*.csv
-database/*.duckdb
-database/*.wal
-
-outputs/*
-!outputs/dashboard.html
-!outputs/performance_summary.md
-!outputs/figures/
-!outputs/figures/*.svg
-!outputs/queries/
-!outputs/queries/*.csv
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*

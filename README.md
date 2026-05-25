@@ -2,6 +2,7 @@
 
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
+**Data de entrega:** 03/06/2026  
 **Dataset:** Our World in Data Energy Dataset
 
 ## Objetivo
@@ -9,6 +10,47 @@
 Construir um Data Warehouse completo em DuckDB para analisar a evolução da geração elétrica por fonte de energia, comparando fontes renováveis, fósseis e de baixo carbono entre países e ao longo do tempo.
 
 O grão da tabela fato é: **uma linha por país, ano e fonte de energia**.
+
+## Entrega pelo GitHub
+
+Este repositório contém todos os arquivos necessários para a entrega final pelo GitHub, incluindo código, documentação, relatório em PDF, banco DuckDB, CSV original, consultas exportadas, gráficos e dashboard.
+
+Link do repositório:
+
+```text
+https://github.com/aj1no/data-warehouse-energia-sustentabilidade
+```
+
+Arquivos principais da entrega:
+
+- Relatório técnico em PDF: `docs/relatorio_tecnico.pdf`
+- Relatório técnico em Markdown: `docs/relatorio_tecnico.md`
+- Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
+- Gráficos: `outputs/figures/`
+- Banco DuckDB: `database/energy_dw.duckdb`
+- Dataset CSV original: `data/raw/owid-energy-data.csv`
+- Consultas exportadas: `outputs/queries/`
+- Dicionário de dados: `docs/dicionario_dados.md`
+- Diagrama do modelo estrela: `docs/diagrama_modelo_estrela.md` e `docs/diagrama_modelo_estrela.png`
+- Roteiro de apresentação: `docs/roteiro_apresentacao.md`
+
+Para instalar dependências:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Para executar o projeto:
+
+```powershell
+python run_all.py
+```
+
+No Windows/VSCode, caso o Python não esteja no PATH, use:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
+```
 
 ## Como Instalar Dependências
 
@@ -77,12 +119,17 @@ duckdb database/energy_dw.duckdb
 ```text
 .
 ├── data/
-│   └── raw/                         # CSV original baixado automaticamente
-├── database/                        # Banco DuckDB gerado
+│   └── raw/
+│       └── owid-energy-data.csv
+├── database/
+│   └── energy_dw.duckdb
 ├── docs/
 │   ├── dicionario_dados.md
 │   ├── diagrama_modelo_estrela.md
-│   └── relatorio_tecnico.md
+│   ├── diagrama_modelo_estrela.png
+│   ├── relatorio_tecnico.md
+│   ├── relatorio_tecnico.pdf
+│   └── roteiro_apresentacao.md
 ├── outputs/
 │   ├── dashboard.html
 │   ├── figures/
@@ -96,6 +143,7 @@ duckdb database/energy_dw.duckdb
 │   └── 05_performance.sql
 ├── dashboard.html
 ├── requirements.txt
+├── run_project.ps1
 └── run_all.py
 ```
 
@@ -127,7 +175,26 @@ duckdb database/energy_dw.duckdb
 
 - Código SQL e Python do pipeline.
 - Banco DuckDB gerado após execução.
+- Dataset CSV original.
+- Relatório técnico em PDF.
+- Roteiro de apresentação.
 - Consultas analíticas exportadas em CSV.
 - Validações de qualidade de dados.
 - Visualizações e dashboard HTML.
 - Documentação técnica, dicionário de dados e diagrama do modelo estrela.
+
+## Checklist de Avaliação
+
+- [x] 3 dimensões ou mais.
+- [x] 1 tabela fato.
+- [x] Dimensão de data.
+- [x] SCD Type 2.
+- [x] Chaves substitutas.
+- [x] Pipeline idempotente.
+- [x] Validações.
+- [x] 5 consultas analíticas.
+- [x] 4 visualizações.
+- [x] Tabela agregada de performance.
+- [x] Relatório técnico em PDF.
+- [x] Dashboard.
+- [x] Banco `.duckdb`.

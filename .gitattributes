@@ -1,0 +1,14 @@
+*.pdf binary
+*.png binary
+*.duckdb binary
+
+*.csv text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.ps1 text eol=crlf
+*.sql text eol=lf
+*.svg text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+
