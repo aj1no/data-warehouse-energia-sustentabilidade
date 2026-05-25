@@ -2,7 +2,6 @@
 
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
-**Data de entrega:** 03/06/2026  
 **Dataset:** Our World in Data Energy Dataset
 
 ## Objetivo
