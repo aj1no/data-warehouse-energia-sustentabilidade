@@ -2,7 +2,6 @@
 
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
-**Data de entrega:** 03/06/2026  
 **Dataset:** Our World in Data Energy Dataset
 
 ## Objetivo
@@ -11,15 +10,6 @@ Construir um Data Warehouse completo em DuckDB para analisar a evolução da ger
 
 O grão da tabela fato é: **uma linha por país, ano e fonte de energia**.
 
-## Entrega pelo GitHub
-
-Este repositório contém todos os arquivos necessários para a entrega final pelo GitHub, incluindo código, documentação, relatório em PDF, banco DuckDB, CSV original, consultas exportadas, gráficos e dashboard.
-
-Link do repositório:
-
-```text
-https://github.com/aj1no/data-warehouse-energia-sustentabilidade
-```
 
 Arquivos principais da entrega:
 
