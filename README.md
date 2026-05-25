@@ -41,6 +41,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
 
 Esse script instala as dependências em `.deps` e executa o projeto sem exigir que o Python esteja configurado no PATH do Windows.
 
+Evite executar com Python 3.14 global do VSCode. Este projeto foi validado com Python 3.12; a pasta `.vscode` já aponta para `.venv\Scripts\python.exe`. Se o VSCode insistir em outro interpretador, use `Ctrl+Shift+P` > `Python: Select Interpreter` > `Enter interpreter path` e selecione:
+
+```text
+.\.venv\Scripts\python.exe
+```
+
 O script:
 
 - baixa `owid-energy-data.csv` se ele ainda não existir;
