@@ -3,7 +3,7 @@ Projeto: Data Warehouse de Energia e Sustentabilidade
 Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 Entrega: 03/06/2026
 
-Gera artefatos finais de entrega pelo GitHub:
+Gera artefatos finais de entrega pelo GitHub, com arquivos normalizados:
 - docs/relatorio_tecnico.pdf
 - docs/diagrama_modelo_estrela.png
 """

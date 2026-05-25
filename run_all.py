@@ -25,7 +25,7 @@ LOCAL_DEPS_DIR = Path(__file__).resolve().parent / ".deps"
 if LOCAL_DEPS_DIR.exists():
     sys.path.insert(0, str(LOCAL_DEPS_DIR))
 
-import pandas as pd # type: ignore
+import pandas as pd
 
 try:
     import duckdb

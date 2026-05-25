@@ -2,6 +2,7 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 03: carrega dimensões e fato. A dim_country implementa SCD Type 2 por faixas.
+-- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 INSERT INTO dw.dim_date (date_key, year, decade, year_start_date)
 SELECT
@@ -149,4 +150,3 @@ INNER JOIN dw.dim_country AS c
 INNER JOIN dw.dim_energy_source AS s
     ON o.source_code = s.source_code
 WHERE o.electricity_twh IS NOT NULL;
-

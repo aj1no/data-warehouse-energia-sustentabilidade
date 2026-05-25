@@ -87,9 +87,9 @@ Os tempos medidos são salvos em:
 - `outputs/queries/analytics_performance_benchmark.csv`
 - `outputs/performance_summary.md`
 
-Na execução validada do projeto, com o dataset real baixado em `data/raw/owid-energy-data.csv`, foram realizadas 7 execuções por consulta. A consulta sobre a fato original retornou 261 linhas, com melhor tempo de 8,648 ms e média de 9,302 ms. A consulta sobre a tabela agregada retornou as mesmas 261 linhas, com melhor tempo de 2,722 ms e média de 3,034 ms.
+Na execução validada do projeto, com o dataset real baixado em `data/raw/owid-energy-data.csv`, foram realizadas 7 execuções por consulta. A consulta sobre a fato original retornou 261 linhas, com melhor tempo de 12,185 ms e média de 14,190 ms. A consulta sobre a tabela agregada retornou as mesmas 261 linhas, com melhor tempo de 3,878 ms e média de 4,913 ms.
 
-O ganho médio observado foi de **3,07x** ao usar `dw.fact_energy_generation_annual_grouped`. Os valores também estão registrados em `outputs/performance_summary.md`.
+O ganho médio observado foi de **2,89x** ao usar `dw.fact_energy_generation_annual_grouped`. Os valores também estão registrados em `outputs/performance_summary.md`.
 
 ## 9. Desafios e Soluções
 
