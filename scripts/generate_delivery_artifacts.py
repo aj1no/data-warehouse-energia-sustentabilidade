@@ -28,7 +28,9 @@ from reportlab.platypus import (
     Spacer,
     Table,
     TableStyle,
+    PageBreak,
 )
+from reportlab.pdfgen import canvas
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -85,28 +87,151 @@ def markdown_table_to_reportlab(lines: list[str], styles) -> Table:
     return table
 
 
+class NumberedCanvas(canvas.Canvas):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
+            super().showPage()
+        super().save()
+
+    def draw_page_number(self, page_count):
+        # ABNT: capa (pagina 1) e folha de rosto (pagina 2) nao possuem numeracao.
+        # Paginas pre-textuais contam na numeracao, mas a numeracao so eh exibida a partir da Introducao (pagina 5)
+        # no canto superior direito (2cm da borda superior e 2cm da borda direita).
+        if self._pageNumber >= 5:
+            self.saveState()
+            self.setFont("Helvetica", 10)
+            self.drawRightString(21.0 * cm - 2.0 * cm, 29.7 * cm - 2.0 * cm, str(self._pageNumber))
+            self.restoreState()
+
+
 def generate_report_pdf() -> None:
     styles = getSampleStyleSheet()
-    styles["Title"].fontSize = 18
-    styles["Title"].leading = 22
-    styles["Heading2"].fontSize = 13
+    
+    # Customizacao de estilos existentes
+    styles["Title"].fontSize = 14
+    styles["Title"].leading = 18
+    styles["Title"].alignment = 1 # Centralizado
+    styles["Title"].fontName = "Helvetica-Bold"
+    styles["Title"].firstLineIndent = 0
+    styles["Title"].spaceAfter = 12
+
+    styles["Heading2"].fontSize = 12
     styles["Heading2"].leading = 16
-    styles["Heading2"].spaceBefore = 12
-    styles["Heading2"].spaceAfter = 6
-    styles["BodyText"].fontSize = 9
-    styles["BodyText"].leading = 12
-    styles.add(ParagraphStyle(name="TableCell", parent=styles["BodyText"], fontSize=7, leading=9))
+    styles["Heading2"].fontName = "Helvetica-Bold"
+    styles["Heading2"].firstLineIndent = 0
+    styles["Heading2"].spaceBefore = 14
+    styles["Heading2"].spaceAfter = 8
+
+    styles["Heading3"].fontSize = 12
+    styles["Heading3"].leading = 16
+    styles["Heading3"].fontName = "Helvetica-BoldOblique"
+    styles["Heading3"].firstLineIndent = 0
+    styles["Heading3"].spaceBefore = 12
+    styles["Heading3"].spaceAfter = 6
+
+    styles["BodyText"].fontSize = 12
+    styles["BodyText"].leading = 18 # Espacamento 1.5 (12 * 1.5 = 18)
+    styles["BodyText"].alignment = 4 # Justificado
+    styles["BodyText"].firstLineIndent = 1.25 * cm
+    styles["BodyText"].spaceAfter = 8
+
+    # Novos estilos customizados
+    styles.add(ParagraphStyle(
+        name="TableCell",
+        parent=styles["Normal"],
+        fontSize=8,
+        leading=11,
+        firstLineIndent=0,
+    ))
+
+    styles.add(ParagraphStyle(
+        name="SubmissionNote",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=10,
+        leading=14,
+        leftIndent=8 * cm,
+        alignment=4, # Justificado
+        firstLineIndent=0,
+        spaceBefore=12,
+        spaceAfter=12,
+    ))
+
+    styles.add(ParagraphStyle(
+        name="CenteredText",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=12,
+        leading=16,
+        alignment=1, # Centralizado
+        firstLineIndent=0,
+        spaceAfter=8,
+    ))
+
+    styles.add(ParagraphStyle(
+        name="PreTextualBody",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=12,
+        leading=16,
+        alignment=4, # Justificado
+        firstLineIndent=1.25 * cm,
+        spaceAfter=8,
+    ))
 
     story = []
     lines = REPORT_MD.read_text(encoding="utf-8").splitlines()
+    
+    page_count = 1
     i = 0
     while i < len(lines):
         line = lines[i]
-        if not line.strip():
-            story.append(Spacer(1, 0.12 * cm))
+        
+        # Quebra de pagina
+        if line.strip() == "---":
+            story.append(PageBreak())
+            page_count += 1
             i += 1
             continue
 
+        # Espacadores verticais
+        if "<br/>" in line:
+            count = line.count("<br/>")
+            story.append(Spacer(1, count * 0.5 * cm))
+            i += 1
+            continue
+
+        # Nota de submissao (Folha de rosto)
+        if line.strip().startswith("<p align=\"right\">") or line.strip().startswith("<p align='right'>"):
+            note_lines = []
+            i += 1
+            while i < len(lines) and not lines[i].strip().endswith("</p>"):
+                note_lines.append(lines[i].strip())
+                i += 1
+            if i < len(lines):
+                note_lines.append(lines[i].strip().replace("</p>", ""))
+                i += 1
+            note_text = " ".join(note_lines).replace("<br/>", " ")
+            story.append(Paragraph(note_text, styles["SubmissionNote"]))
+            continue
+
+        # Ignorar linhas vazias
+        if not line.strip():
+            i += 1
+            continue
+
+        # Tabelas Markdown
         if line.strip().startswith("|"):
             table_lines = []
             while i < len(lines) and lines[i].strip().startswith("|"):
@@ -116,6 +241,7 @@ def generate_report_pdf() -> None:
             story.append(Spacer(1, 0.15 * cm))
             continue
 
+        # Listas com marcador
         if line.strip().startswith("- "):
             items = []
             while i < len(lines) and lines[i].strip().startswith("- "):
@@ -126,6 +252,7 @@ def generate_report_pdf() -> None:
             story.append(Spacer(1, 0.1 * cm))
             continue
 
+        # Blocos de codigo
         if line.strip().startswith("```"):
             code_lines = []
             i += 1
@@ -133,25 +260,46 @@ def generate_report_pdf() -> None:
                 code_lines.append(lines[i])
                 i += 1
             i += 1
-            code_text = "<br/>".join(line.replace(" ", "&nbsp;") for line in code_lines)
-            story.append(Paragraph(f"<font name='Courier'>{code_text}</font>", styles["BodyText"]))
+            code_text = "<br/>".join(l.replace(" ", "&nbsp;") for l in code_lines)
+            story.append(Paragraph(f"<font name='Courier'>{code_text}</font>", styles["TableCell"]))
             story.append(Spacer(1, 0.1 * cm))
             continue
 
-        story.append(paragraph_from_markdown(line, styles))
+        # Paragrafos normais e titulos
+        stripped = line.strip()
+        if page_count <= 2:
+            # Paginas 1 e 2: Centraliza todo o texto (Capa e Folha de rosto)
+            text = stripped.lstrip("#").strip()
+            story.append(Paragraph(clean_inline_markdown(text), styles["CenteredText"]))
+        else:
+            # Demais paginas (Resumo, Sumario e capitulos)
+            if stripped.startswith("# "):
+                text = stripped[2:]
+                style = styles["Title"] if page_count <= 4 else styles["Heading2"]
+                story.append(Paragraph(clean_inline_markdown(text), style))
+            elif stripped.startswith("## "):
+                story.append(Paragraph(clean_inline_markdown(stripped[3:]), styles["Heading2"]))
+            elif stripped.startswith("### "):
+                story.append(Paragraph(clean_inline_markdown(stripped[4:]), styles["Heading3"]))
+            else:
+                # No resumo (pagina 3), nao queremos recuo de paragrafo ABNT
+                style = styles["PreTextualBody"] if page_count == 3 else styles["BodyText"]
+                story.append(Paragraph(clean_inline_markdown(stripped), style))
+                
         i += 1
 
+    # Margens ABNT: Superior: 3cm, Esquerda: 3cm, Inferior: 2cm, Direita: 2cm
     doc = SimpleDocTemplate(
         str(REPORT_PDF),
         pagesize=A4,
-        rightMargin=1.5 * cm,
-        leftMargin=1.5 * cm,
-        topMargin=1.4 * cm,
-        bottomMargin=1.4 * cm,
+        leftMargin=3.0 * cm,
+        rightMargin=2.0 * cm,
+        topMargin=3.0 * cm,
+        bottomMargin=2.0 * cm,
         title="Relatório Técnico - Data Warehouse de Energia e Sustentabilidade",
         author="Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar",
     )
-    doc.build(story)
+    doc.build(story, canvasmaker=NumberedCanvas)
 
 
 def get_font(size: int, bold: bool = False):

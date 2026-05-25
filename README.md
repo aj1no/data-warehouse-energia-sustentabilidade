@@ -13,8 +13,8 @@ O grão da tabela fato é: **uma linha por país, ano e fonte de energia**.
 
 Arquivos principais da entrega:
 
-- Relatório técnico em PDF: `docs/relatorio_tecnico.pdf`
-- Relatório técnico em Markdown: `docs/relatorio_tecnico.md`
+- Relatório técnico em PDF (estruturado em padrão acadêmico inspirado nas normas ABNT, especialmente NBR 14724 e NBR 6023): `docs/relatorio_tecnico.pdf`
+- Relatório técnico em Markdown (estruturado em padrão acadêmico inspirado nas normas ABNT): `docs/relatorio_tecnico.md`
 - Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
 - Gráficos: `outputs/figures/`
 - Banco DuckDB: `database/energy_dw.duckdb`
