@@ -3,7 +3,7 @@ stg.energy_raw,23377
 stg.energy_standardized,23377
 oltp.country_year_metrics,17265
 oltp.energy_source_observations,63245
-dw.dim_date,126
+dw.dim_date,127
 dw.dim_country,928
 dw.dim_energy_source,9
 dw.fact_energy_generation,63245

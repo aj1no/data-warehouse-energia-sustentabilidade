@@ -15,6 +15,8 @@ erDiagram
         INTEGER year
         INTEGER decade
         DATE year_start_date
+        BOOLEAN is_current_year
+        BOOLEAN is_latest_dataset_year
     }
 
     "dw.dim_country" {

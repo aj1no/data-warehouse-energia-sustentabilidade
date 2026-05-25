@@ -3,15 +3,24 @@
 -- Entrega: 03/06/2026
 -- Etapa 03: carrega dimensões e fato. A dim_country implementa SCD Type 2 por faixas.
 
-INSERT INTO dw.dim_date (date_key, year, decade, year_start_date)
+INSERT INTO dw.dim_date (
+    date_key,
+    year,
+    decade,
+    year_start_date,
+    is_current_year,
+    is_latest_dataset_year
+)
 SELECT
     (year * 10000) + 101 AS date_key,
     year,
     FLOOR(year / 10) * 10 AS decade,
-    MAKE_DATE(year, 1, 1) AS year_start_date
+    MAKE_DATE(year, 1, 1) AS year_start_date,
+    (year = CAST(EXTRACT(YEAR FROM CURRENT_DATE) AS INTEGER)) AS is_current_year,
+    (year = (SELECT MAX(year) FROM oltp.country_year_metrics)) AS is_latest_dataset_year
 FROM generate_series(
     (SELECT MIN(year) FROM oltp.country_year_metrics),
-    (SELECT MAX(year) FROM oltp.country_year_metrics)
+    GREATEST((SELECT MAX(year) FROM oltp.country_year_metrics), CAST(EXTRACT(YEAR FROM CURRENT_DATE) AS INTEGER))
 ) AS years(year);
 
 INSERT INTO dw.dim_energy_source (

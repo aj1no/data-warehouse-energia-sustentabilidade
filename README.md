@@ -75,13 +75,13 @@ Execute o pipeline completo:
 python run_all.py
 ```
 
-No Windows/VSCode, se aparecer erro de `python` não encontrado, `No module named duckdb` ou bloqueio de execução de scripts, use:
+No Windows/VSCode, se aparecer erro de `python` não encontrado ou bloqueio de execução de scripts, use:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
 ```
 
-Esse script instala as dependências em `.deps` e executa o projeto sem exigir que o Python esteja configurado no PATH do Windows.
+Esse script instala as dependências necessárias e executa o projeto.
 
 Evite executar com Python 3.14 global do VSCode. Este projeto foi validado com Python 3.12; a pasta `.vscode` já aponta para `.venv\Scripts\python.exe`. Se o VSCode insistir em outro interpretador, use `Ctrl+Shift+P` > `Python: Select Interpreter` > `Enter interpreter path` e selecione:
 

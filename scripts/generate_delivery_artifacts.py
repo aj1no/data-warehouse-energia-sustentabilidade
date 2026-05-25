@@ -15,10 +15,6 @@ import sys
 from html import escape
 from pathlib import Path
 
-LOCAL_DEPS_DIR = Path(__file__).resolve().parents[1] / ".deps"
-if LOCAL_DEPS_DIR.exists():
-    sys.path.insert(0, str(LOCAL_DEPS_DIR))
-
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -239,7 +235,14 @@ def generate_star_schema_png() -> None:
         draw,
         dim_date,
         "dw.dim_date",
-        ["PK date_key", "year", "decade", "year_start_date"],
+        [
+            "PK date_key",
+            "year",
+            "decade",
+            "year_start_date",
+            "is_current_year",
+            "is_latest_dataset_year",
+        ],
         "#ffffff",
         "#3a7ca5",
     )

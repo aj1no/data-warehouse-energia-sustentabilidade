@@ -1,7 +1,6 @@
 $ErrorActionPreference = "Stop"
 
 $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$DepsDir = Join-Path $ProjectRoot ".deps"
 $Requirements = Join-Path $ProjectRoot "requirements.txt"
 $BundledPython = Join-Path $env:USERPROFILE ".cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
 
@@ -32,25 +31,14 @@ if (-not $Python -and (Test-Path $BundledPython)) {
 }
 
 if (-not $Python) {
-    throw "Nenhum Python com pip foi encontrado. Instale Python 3.10+ ou selecione um interpretador Python válido no VSCode."
+    throw "Nenhum Python com pip foi encontrado. Instale Python 3.10+."
 }
 
-if (-not (Test-Path $DepsDir)) {
-    New-Item -ItemType Directory -Path $DepsDir | Out-Null
+Write-Host "Instalando dependencias de $Requirements..."
+& $Python -m pip install -r $Requirements
+if ($LASTEXITCODE -ne 0) {
+    throw "Falha ao instalar dependencias."
 }
 
-$PreviousPythonPath = $env:PYTHONPATH
-$env:PYTHONPATH = $DepsDir
-
-& $Python -c "import duckdb, pandas" *> $null
-$DependenciesOk = $LASTEXITCODE -eq 0
-
-if (-not $DependenciesOk) {
-    & $Python -m pip install --upgrade --target $DepsDir -r $Requirements
-    if ($LASTEXITCODE -ne 0) {
-        throw "Falha ao instalar dependências em .deps."
-    }
-}
-
+Write-Host "Executando o pipeline do DW..."
 & $Python (Join-Path $ProjectRoot "run_all.py")
-$env:PYTHONPATH = $PreviousPythonPath

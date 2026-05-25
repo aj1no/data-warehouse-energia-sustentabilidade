@@ -19,12 +19,6 @@ import time
 import urllib.request
 from pathlib import Path
 
-# Permite executar pelo VSCode mesmo quando as dependências foram instaladas
-# localmente em .deps com pip --target.
-LOCAL_DEPS_DIR = Path(__file__).resolve().parent / ".deps"
-if LOCAL_DEPS_DIR.exists():
-    sys.path.insert(0, str(LOCAL_DEPS_DIR))
-
 import pandas as pd # type: ignore
 
 try:

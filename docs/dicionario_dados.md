@@ -76,6 +76,8 @@ Faixas de PIB per capita:
 | `year` | INTEGER | Ano. |
 | `decade` | INTEGER | Década do ano. |
 | `year_start_date` | DATE | Primeiro dia do ano. |
+| `is_current_year` | BOOLEAN | Indica se o ano corresponde ao ano atual do sistema. |
+| `is_latest_dataset_year` | BOOLEAN | Indica se o ano corresponde ao ano mais recente disponível no dataset. |
 
 ### `dw.dim_country`
 

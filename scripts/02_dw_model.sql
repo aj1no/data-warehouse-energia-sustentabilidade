@@ -15,7 +15,9 @@ CREATE TABLE dw.dim_date (
     date_key INTEGER PRIMARY KEY,
     year INTEGER NOT NULL UNIQUE,
     decade INTEGER NOT NULL,
-    year_start_date DATE NOT NULL
+    year_start_date DATE NOT NULL,
+    is_current_year BOOLEAN NOT NULL,
+    is_latest_dataset_year BOOLEAN NOT NULL
 );
 
 CREATE TABLE dw.dim_country (
