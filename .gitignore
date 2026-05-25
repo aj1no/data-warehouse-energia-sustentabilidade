@@ -1,0 +1,11 @@
+.venv/
+.deps/
+.tmp/
+__pycache__/
+*.pyc
+
+data/raw/*.csv
+database/*.duckdb
+database/*.wal
+
+outputs/
