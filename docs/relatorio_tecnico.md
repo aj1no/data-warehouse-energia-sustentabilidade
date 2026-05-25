@@ -31,7 +31,7 @@
 <p align="right">
 Relatório técnico e acadêmico apresentado ao Curso de Tecnologia em Ciência de Dados da Faculdade de Tecnologia de Jundiaí (FATEC Jundiaí), como requisito parcial para a aprovação na disciplina Banco e Armazém de Dados.
 <br/><br/>
-<b>Orientação:</b> Professor Docente da Disciplina
+<b>Orientação:</b> Prof. Rafael Gross
 </p>
 
 <br/><br/><br/><br/><br/><br/>
