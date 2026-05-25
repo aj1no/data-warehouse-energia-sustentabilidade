@@ -33,6 +33,14 @@ Execute o pipeline completo:
 python run_all.py
 ```
 
+No Windows/VSCode, se aparecer erro de `python` não encontrado, `No module named duckdb` ou bloqueio de execução de scripts, use:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
+```
+
+Esse script instala as dependências em `.deps` e executa o projeto sem exigir que o Python esteja configurado no PATH do Windows.
+
 O script:
 
 - baixa `owid-energy-data.csv` se ele ainda não existir;
@@ -117,4 +125,3 @@ duckdb database/energy_dw.duckdb
 - Validações de qualidade de dados.
 - Visualizações e dashboard HTML.
 - Documentação técnica, dicionário de dados e diagrama do modelo estrela.
-
