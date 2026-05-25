@@ -8,4 +8,10 @@ data/raw/*.csv
 database/*.duckdb
 database/*.wal
 
-outputs/
+outputs/*
+!outputs/dashboard.html
+!outputs/performance_summary.md
+!outputs/figures/
+!outputs/figures/*.svg
+!outputs/queries/
+!outputs/queries/*.csv

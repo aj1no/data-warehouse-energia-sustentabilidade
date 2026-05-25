@@ -1,0 +1,10 @@
+source_name,source_group,total_electricity_twh
+Coal,Fossil,291642.14
+Gas,Fossil,154678.083
+Oil,Fossil,43653.406
+Nuclear,Low Carbon,107505.969
+Biofuel,Renewable,10738.7
+Hydro,Renewable,148753.543
+Other renewable,Renewable,14821.911
+Solar,Renewable,12640.553
+Wind,Renewable,22631.641

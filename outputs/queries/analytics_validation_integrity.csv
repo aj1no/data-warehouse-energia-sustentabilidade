@@ -1,0 +1,4 @@
+relationship_name,orphan_rows
+fact_to_dim_date,0
+fact_to_dim_country,0
+fact_to_dim_energy_source,0

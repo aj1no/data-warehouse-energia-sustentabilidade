@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520" role="img">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
+.title{font-size:22px;font-weight:700}
+.subtitle{font-size:12px;fill:#62707f}
+.axis{stroke:#8996a3;stroke-width:1}
+.grid{stroke:#d9e0e6;stroke-width:1}
+.label{font-size:11px;fill:#62707f}
+</style>
+<rect width="980" height="520" fill="#fbfcfd"/>
+<text class="title" x="28" y="32">Brasil: evolução de solar, eólica e hidrelétrica</text>
+<text class="subtitle" x="28" y="52">Geração elétrica anual em TWh</text>
+<line class="grid" x1="74" y1="462.0" x2="810" y2="462.0"/>
+<text class="label" x="24" y="466.0">0</text>
+<line class="grid" x1="74" y1="384.4" x2="810" y2="384.4"/>
+<text class="label" x="24" y="388.4">86</text>
+<line class="grid" x1="74" y1="306.8" x2="810" y2="306.8"/>
+<text class="label" x="24" y="310.8">172</text>
+<line class="grid" x1="74" y1="229.2" x2="810" y2="229.2"/>
+<text class="label" x="24" y="233.2">258</text>
+<line class="grid" x1="74" y1="151.6" x2="810" y2="151.6"/>
+<text class="label" x="24" y="155.6">344</text>
+<line class="grid" x1="74" y1="74.0" x2="810" y2="74.0"/>
+<text class="label" x="24" y="78.0">430</text>
+<line class="grid" x1="74.0" y1="74" x2="74.0" y2="462"/>
+<text class="label" text-anchor="middle" x="74.0" y="496">1965</text>
+<line class="grid" x1="159.9" y1="74" x2="159.9" y2="462"/>
+<text class="label" text-anchor="middle" x="159.9" y="496">1972</text>
+<line class="grid" x1="245.7" y1="74" x2="245.7" y2="462"/>
+<text class="label" text-anchor="middle" x="245.7" y="496">1979</text>
+<line class="grid" x1="331.6" y1="74" x2="331.6" y2="462"/>
+<text class="label" text-anchor="middle" x="331.6" y="496">1986</text>
+<line class="grid" x1="417.5" y1="74" x2="417.5" y2="462"/>
+<text class="label" text-anchor="middle" x="417.5" y="496">1993</text>
+<line class="grid" x1="503.3" y1="74" x2="503.3" y2="462"/>
+<text class="label" text-anchor="middle" x="503.3" y="496">2000</text>
+<line class="grid" x1="589.2" y1="74" x2="589.2" y2="462"/>
+<text class="label" text-anchor="middle" x="589.2" y="496">2007</text>
+<line class="grid" x1="675.1" y1="74" x2="675.1" y2="462"/>
+<text class="label" text-anchor="middle" x="675.1" y="496">2014</text>
+<line class="grid" x1="760.9" y1="74" x2="760.9" y2="462"/>
+<text class="label" text-anchor="middle" x="760.9" y="496">2021</text>
+<line class="grid" x1="810.0" y1="74" x2="810.0" y2="462"/>
+<text class="label" text-anchor="middle" x="810.0" y="496">2025</text>
+<line class="axis" x1="74" y1="462" x2="810" y2="462"/>
+<line class="axis" x1="74" y1="74" x2="74" y2="462"/>
+<polyline fill="none" stroke="#2A9D8F" stroke-width="3" points="74.0,439.0 86.3,436.8 98.5,435.7 110.8,434.4 123.1,432.5 135.3,426.1 147.6,423.0 159.9,416.3 172.1,409.8 184.4,402.7 196.7,396.8 208.9,387.2 221.2,377.7 233.5,369.3 245.7,356.8 258.0,345.7 270.3,344.0 282.5,334.7 294.8,325.3 307.1,311.7 319.3,301.0 331.6,297.4 343.9,294.5 356.1,282.4 368.4,277.3 380.7,275.5 392.9,265.5 405.2,260.5 417.5,249.9 429.7,243.0 442.0,232.9 454.3,222.2 466.5,210.3 478.8,199.0 491.1,197.6 503.3,187.3 515.6,220.3 527.9,203.9 540.1,186.2 552.4,172.5 564.7,157.5 576.9,147.3 589.2,124.5 601.5,128.5 613.7,109.2 626.0,98.1 638.3,75.5 650.5,87.2 662.8,109.2 675.1,125.0 687.3,137.4 699.6,118.3 711.9,127.3 724.1,111.0 736.4,103.0 748.7,104.3 760.9,134.6 773.2,76.6 785.5,77.6 797.7,89.2 810.0,111.3"/>
+<circle cx="74.0" cy="439.0" r="3.5" fill="#2A9D8F"/>
+<circle cx="123.1" cy="432.5" r="3.5" fill="#2A9D8F"/>
+<circle cx="172.1" cy="409.8" r="3.5" fill="#2A9D8F"/>
+<circle cx="221.2" cy="377.7" r="3.5" fill="#2A9D8F"/>
+<circle cx="270.3" cy="344.0" r="3.5" fill="#2A9D8F"/>
+<circle cx="319.3" cy="301.0" r="3.5" fill="#2A9D8F"/>
+<circle cx="368.4" cy="277.3" r="3.5" fill="#2A9D8F"/>
+<circle cx="417.5" cy="249.9" r="3.5" fill="#2A9D8F"/>
+<circle cx="466.5" cy="210.3" r="3.5" fill="#2A9D8F"/>
+<circle cx="515.6" cy="220.3" r="3.5" fill="#2A9D8F"/>
+<circle cx="564.7" cy="157.5" r="3.5" fill="#2A9D8F"/>
+<circle cx="613.7" cy="109.2" r="3.5" fill="#2A9D8F"/>
+<circle cx="662.8" cy="109.2" r="3.5" fill="#2A9D8F"/>
+<circle cx="711.9" cy="127.3" r="3.5" fill="#2A9D8F"/>
+<circle cx="760.9" cy="134.6" r="3.5" fill="#2A9D8F"/>
+<circle cx="810.0" cy="111.3" r="3.5" fill="#2A9D8F"/>
+<rect x="842" y="64" width="14" height="14" fill="#2A9D8F"/>
+<text class="label" x="864" y="76">Hydro</text>
+<polyline fill="none" stroke="#E9B44C" stroke-width="3" points="74.0,462.0 86.3,462.0 98.5,462.0 110.8,462.0 123.1,462.0 135.3,462.0 147.6,462.0 159.9,462.0 172.1,462.0 184.4,462.0 196.7,462.0 208.9,462.0 221.2,462.0 233.5,462.0 245.7,462.0 258.0,462.0 270.3,462.0 282.5,462.0 294.8,462.0 307.1,462.0 319.3,462.0 331.6,462.0 343.9,462.0 356.1,462.0 368.4,462.0 380.7,462.0 392.9,462.0 405.2,462.0 417.5,462.0 429.7,462.0 442.0,462.0 454.3,462.0 466.5,462.0 478.8,462.0 491.1,462.0 503.3,462.0 515.6,462.0 527.9,462.0 540.1,462.0 552.4,462.0 564.7,462.0 576.9,462.0 589.2,462.0 601.5,462.0 613.7,462.0 626.0,462.0 638.3,462.0 650.5,462.0 662.8,462.0 675.1,462.0 687.3,461.9 699.6,461.9 711.9,461.3 724.1,458.9 736.4,456.0 748.7,452.3 760.9,446.9 773.2,434.8 785.5,416.3 797.7,397.6 810.0,382.0"/>
+<circle cx="74.0" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="123.1" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="172.1" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="221.2" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="270.3" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="319.3" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="368.4" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="417.5" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="466.5" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="515.6" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="564.7" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="613.7" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="662.8" cy="462.0" r="3.5" fill="#E9B44C"/>
+<circle cx="711.9" cy="461.3" r="3.5" fill="#E9B44C"/>
+<circle cx="760.9" cy="446.9" r="3.5" fill="#E9B44C"/>
+<circle cx="810.0" cy="382.0" r="3.5" fill="#E9B44C"/>
+<rect x="842" y="90" width="14" height="14" fill="#E9B44C"/>
+<text class="label" x="864" y="102">Solar</text>
+<polyline fill="none" stroke="#3A7CA5" stroke-width="3" points="74.0,462.0 86.3,462.0 98.5,462.0 110.8,462.0 123.1,462.0 135.3,462.0 147.6,462.0 159.9,462.0 172.1,462.0 184.4,462.0 196.7,462.0 208.9,462.0 221.2,462.0 233.5,462.0 245.7,462.0 258.0,462.0 270.3,462.0 282.5,462.0 294.8,462.0 307.1,462.0 319.3,462.0 331.6,462.0 343.9,462.0 356.1,462.0 368.4,462.0 380.7,462.0 392.9,462.0 405.2,462.0 417.5,462.0 429.7,462.0 442.0,462.0 454.3,462.0 466.5,462.0 478.8,462.0 491.1,462.0 503.3,462.0 515.6,462.0 527.9,461.9 540.1,461.9 552.4,461.9 564.7,461.9 576.9,461.8 589.2,461.4 601.5,460.9 613.7,460.9 626.0,460.0 638.3,459.6 650.5,457.4 662.8,456.1 675.1,451.0 687.3,442.5 699.6,431.8 711.9,423.8 724.1,418.3 736.4,411.5 748.7,410.5 760.9,396.8 773.2,388.3 785.5,375.6 797.7,364.1 810.0,355.9"/>
+<circle cx="74.0" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="123.1" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="172.1" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="221.2" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="270.3" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="319.3" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="368.4" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="417.5" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="466.5" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="515.6" cy="462.0" r="3.5" fill="#3A7CA5"/>
+<circle cx="564.7" cy="461.9" r="3.5" fill="#3A7CA5"/>
+<circle cx="613.7" cy="460.9" r="3.5" fill="#3A7CA5"/>
+<circle cx="662.8" cy="456.1" r="3.5" fill="#3A7CA5"/>
+<circle cx="711.9" cy="423.8" r="3.5" fill="#3A7CA5"/>
+<circle cx="760.9" cy="396.8" r="3.5" fill="#3A7CA5"/>
+<circle cx="810.0" cy="355.9" r="3.5" fill="#3A7CA5"/>
+<rect x="842" y="116" width="14" height="14" fill="#3A7CA5"/>
+<text class="label" x="864" y="128">Wind</text>
+</svg>
