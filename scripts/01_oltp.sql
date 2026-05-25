@@ -2,7 +2,6 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 01: cria uma camada OLTP normalizada/intermediária para simplificar o ETL dimensional.
--- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 CREATE SCHEMA IF NOT EXISTS oltp;
 
@@ -107,3 +106,4 @@ FROM (
 ) AS long_sources
 WHERE electricity_twh IS NOT NULL
    OR electricity_share_pct IS NOT NULL;
+

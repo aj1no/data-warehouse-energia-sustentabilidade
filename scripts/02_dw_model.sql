@@ -2,7 +2,6 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 02: define o modelo dimensional em estrela no schema dw.
--- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 CREATE SCHEMA IF NOT EXISTS dw;
 
@@ -50,3 +49,4 @@ CREATE TABLE dw.fact_energy_generation (
     created_at TIMESTAMP NOT NULL,
     PRIMARY KEY (date_key, country_key, source_key)
 );
+

@@ -2,7 +2,6 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 00: cria a camada staging a partir do CSV original da Our World in Data.
--- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 CREATE SCHEMA IF NOT EXISTS stg;
 
@@ -45,3 +44,4 @@ SELECT
 FROM stg.energy_raw
 WHERE country IS NOT NULL
   AND TRY_CAST(year AS INTEGER) IS NOT NULL;
+

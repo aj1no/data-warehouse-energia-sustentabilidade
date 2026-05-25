@@ -2,7 +2,6 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 05: cria tabela agregada anual e consultas de referência para comparação de performance.
--- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 CREATE OR REPLACE TABLE dw.fact_energy_generation_annual_grouped AS
 SELECT
@@ -48,3 +47,4 @@ SELECT
 FROM dw.fact_energy_generation_annual_grouped
 WHERE year = (SELECT year FROM latest_year)
 ORDER BY year, country_name, source_group;
+

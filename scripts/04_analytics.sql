@@ -2,7 +2,6 @@
 -- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Entrega: 03/06/2026
 -- Etapa 04: consultas analíticas obrigatórias e validações de qualidade.
--- Arquivo revisado para leitura acadêmica e compatibilidade com DuckDB.
 
 CREATE SCHEMA IF NOT EXISTS analytics;
 
@@ -182,3 +181,4 @@ FROM dw.fact_energy_generation AS f
 INNER JOIN dw.dim_energy_source AS s ON f.source_key = s.source_key
 GROUP BY s.source_name, s.source_group
 ORDER BY s.source_group, s.source_name;
+
