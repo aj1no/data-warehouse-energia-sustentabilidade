@@ -3,7 +3,7 @@
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Professor:** Prof. Rafael Gross  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
-**Data de entrega:** 03/06/2026
+
 
 ## Objetivo do Projeto
 
