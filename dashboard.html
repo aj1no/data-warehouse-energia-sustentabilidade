@@ -6,11 +6,10 @@
   <title>Data Warehouse de Energia e Sustentabilidade</title>
   <style>
     :root {
-      color-scheme: light;
-      --ink: #24313d;
-      --muted: #647283;
-      --line: #dbe3ea;
-      --bg: #f4f7f9;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
       --panel: #ffffff;
       --green: #2a9d8f;
       --blue: #3a7ca5;
@@ -19,60 +18,91 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
       color: var(--ink);
       background: var(--bg);
+      line-height: 1.5;
     }
     header {
       background: #ffffff;
       border-bottom: 1px solid var(--line);
-      padding: 28px 32px 22px;
+      padding: 36px 24px 28px;
+      text-align: center;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
     }
     header h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
-      line-height: 1.15;
-      letter-spacing: 0;
+      margin: 0 0 10px;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0f172a;
     }
     header p {
       margin: 4px 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }
     main {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 32px 24px;
     }
     .kpis {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
     }
     .kpi {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .kpi:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+    .kpis > :nth-child(1) { border-top: 4px solid var(--muted); }
+    .kpis > :nth-child(2) { border-top: 4px solid var(--blue); }
+    .kpis > :nth-child(3) { border-top: 4px solid var(--gold); }
+    .kpis > :nth-child(4) { border-top: 4px solid var(--green); }
+    .kpis > :nth-child(5) { border-top: 4px solid #148073; }
+    
     .kpi span {
       display: block;
       color: var(--muted);
       font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
     .kpi strong {
       display: block;
-      font-size: 24px;
-      line-height: 1.1;
+      font-size: 26px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
     }
     section {
-      margin: 0 0 24px;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
       overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
     }
     section svg {
       width: 100%;
@@ -80,13 +110,20 @@
       display: block;
     }
     .table-wrap {
-      padding: 20px;
-      overflow-x: auto;
+      padding: 24px;
     }
     h2 {
-      margin: 0 0 14px;
-      font-size: 18px;
-      letter-spacing: 0;
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+    .validation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
     }
     table {
       border-collapse: collapse;
@@ -94,15 +131,34 @@
       font-size: 14px;
     }
     th, td {
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--line);
       text-align: left;
       white-space: nowrap;
     }
     th {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: #f8fafc;
+    }
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+    code {
+      font-family: Consolas, Monaco, monospace;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #0f172a;
+    }
+    @media (max-width: 960px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -120,7 +176,9 @@
 <article class="kpi"><span>Renováveis no total</span><strong>36.1%</strong></article>
 <article class="kpi"><span>Brasil renovável</span><strong>87.5%</strong></article>
     </div>
-    <section><svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520" role="img">
+    
+    <div class="charts-grid">
+      <section><svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520" role="img">
 <style>
 text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 .title{font-size:22px;font-weight:700}
@@ -224,7 +282,7 @@ text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 <rect x="842" y="116" width="14" height="14" fill="#3A7CA5"/>
 <text class="label" x="864" y="128">Wind</text>
 </svg></section>
-    <section><svg xmlns="http://www.w3.org/2000/svg" width="980" height="540" viewBox="0 0 980 540" role="img">
+      <section><svg xmlns="http://www.w3.org/2000/svg" width="980" height="540" viewBox="0 0 980 540" role="img">
 <style>
 text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 .title{font-size:22px;font-weight:700}
@@ -268,7 +326,9 @@ text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 <text class="label" x="944.0" y="473">4.1 mil TWh</text>
 <line class="axis" x1="210" y1="494" x2="936" y2="494"/>
 </svg></section>
-    <section><svg xmlns="http://www.w3.org/2000/svg" width="1060" height="560" viewBox="0 0 1060 560" role="img">
+    </div>
+    
+    <section style="margin-bottom: 24px;"><svg xmlns="http://www.w3.org/2000/svg" width="1060" height="560" viewBox="0 0 1060 560" role="img">
 <style>
 text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 .title{font-size:22px;font-weight:700}
@@ -682,22 +742,80 @@ text{font-family:Arial,Helvetica,sans-serif;fill:#24313d}
 <rect x="466.0" y="530" width="4.2" height="10" fill="#2a9d8f"/>
 <text class="label" x="484" y="539">0% a 91%</text>
 </svg></section>
+    
     <section class="table-wrap">
-      <h2>Comparação de performance</h2>
+      <h2>Comparação de Performance</h2>
+      <p style="margin-top: -8px; margin-bottom: 16px; font-size: 14px; color: var(--muted);">
+        Benchmark comparando consultas executadas na tabela fato original vs. tabela agregada física.
+      </p>
       <table>
         <thead>
           <tr>
             <th>Consulta</th>
             <th>Execuções</th>
-            <th>Melhor ms</th>
-            <th>Média ms</th>
-            <th>Linhas</th>
+            <th>Melhor Tempo</th>
+            <th>Tempo Médio</th>
+            <th>Linhas Retornadas</th>
           </tr>
         </thead>
-        <tbody><tr><td>aggregated_table</td><td>7</td><td>2.442</td><td>2.685</td><td>261</td></tr>
-<tr><td>fact_original</td><td>7</td><td>7.434</td><td>8.788</td><td>261</td></tr></tbody>
+        <tbody><tr><td><code>aggregated_table</code></td><td>7</td><td>2.545 ms</td><td>2.800 ms</td><td>261</td></tr>
+<tr><td><code>fact_original</code></td><td>7</td><td>7.357 ms</td><td>8.513 ms</td><td>261</td></tr></tbody>
       </table>
     </section>
+
+    <div class="validation-grid">
+      <section class="table-wrap">
+        <h2>Censo de Linhas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Objeto do Banco</th>
+              <th>Contagem de Linhas</th>
+            </tr>
+          </thead>
+          <tbody><tr><td><code>stg.energy_raw</code></td><td>23,377</td></tr>
+<tr><td><code>stg.energy_standardized</code></td><td>23,377</td></tr>
+<tr><td><code>oltp.country_year_metrics</code></td><td>17,265</td></tr>
+<tr><td><code>oltp.energy_source_observations</code></td><td>63,245</td></tr>
+<tr><td><code>dw.dim_date</code></td><td>127</td></tr>
+<tr><td><code>dw.dim_country</code></td><td>928</td></tr>
+<tr><td><code>dw.dim_energy_source</code></td><td>9</td></tr>
+<tr><td><code>dw.fact_energy_generation</code></td><td>63,245</td></tr></tbody>
+        </table>
+      </section>
+
+      <section class="table-wrap">
+        <h2>Integridade Referencial & Nulidades</h2>
+        <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; color: var(--muted); font-weight: 600;">Chaves Estrangeiras Nulas na Fato</h3>
+        <table style="margin-bottom: 24px;">
+          <thead>
+            <tr>
+              <th>null_date_key</th>
+              <th>null_country_key</th>
+              <th>null_source_key</th>
+            </tr>
+          </thead>
+          <tbody><tr>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+    </tr></tbody>
+        </table>
+
+        <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; color: var(--muted); font-weight: 600;">Registros Órfãos (Violadores de FK)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Relacionamento</th>
+              <th>Linhas Órfãs</th>
+            </tr>
+          </thead>
+          <tbody><tr><td><code>fact_to_dim_date</code></td><td>0</td></tr>
+<tr><td><code>fact_to_dim_country</code></td><td>0</td></tr>
+<tr><td><code>fact_to_dim_energy_source</code></td><td>0</td></tr></tbody>
+        </table>
+      </section>
+    </div>
   </main>
 </body>
 </html>

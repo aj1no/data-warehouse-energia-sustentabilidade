@@ -536,14 +536,42 @@ def generate_dashboard(
     performance = query_dataframe(conn, "SELECT * FROM analytics.performance_benchmark ORDER BY query_name")
     performance_rows = "\n".join(
         "<tr>"
-        f"<td>{html.escape(str(row['query_name']))}</td>"
+        f"<td><code>{html.escape(str(row['query_name']))}</code></td>"
         f"<td>{int(row['runs'])}</td>"
-        f"<td>{row['best_ms']:.3f}</td>"
-        f"<td>{row['avg_ms']:.3f}</td>"
+        f"<td>{row['best_ms']:.3f} ms</td>"
+        f"<td>{row['avg_ms']:.3f} ms</td>"
         f"<td>{int(row['rows_returned'])}</td>"
         "</tr>"
         for _, row in performance.iterrows()
     )
+
+    # Buscar validações de qualidade
+    row_counts = query_dataframe(conn, "SELECT * FROM analytics.validation_row_counts")
+    row_counts_rows = "\n".join(
+        "<tr>"
+        f"<td><code>{html.escape(str(row['object_name']))}</code></td>"
+        f"<td>{int(row['row_count']):,}</td>"
+        "</tr>"
+        for _, row in row_counts.iterrows()
+    )
+
+    fk_nulls = query_dataframe(conn, "SELECT * FROM analytics.validation_fk_nulls")
+    fk_null_row = fk_nulls.iloc[0]
+    fk_nulls_rows = f"""<tr>
+        <td>{int(fk_null_row['null_date_key'])}</td>
+        <td>{int(fk_null_row['null_country_key'])}</td>
+        <td>{int(fk_null_row['null_source_key'])}</td>
+    </tr>"""
+
+    integrity = query_dataframe(conn, "SELECT * FROM analytics.validation_integrity")
+    integrity_rows = "\n".join(
+        "<tr>"
+        f"<td><code>{html.escape(str(row['relationship_name']))}</code></td>"
+        f"<td>{int(row['orphan_rows'])}</td>"
+        "</tr>"
+        for _, row in integrity.iterrows()
+    )
+
     kpi_cards = "\n".join(
         f'<article class="kpi"><span>{html.escape(label)}</span><strong>{html.escape(value)}</strong></article>'
         for label, value in kpis.items()
@@ -557,11 +585,10 @@ def generate_dashboard(
   <title>Data Warehouse de Energia e Sustentabilidade</title>
   <style>
     :root {{
-      color-scheme: light;
-      --ink: #24313d;
-      --muted: #647283;
-      --line: #dbe3ea;
-      --bg: #f4f7f9;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
       --panel: #ffffff;
       --green: #2a9d8f;
       --blue: #3a7ca5;
@@ -570,60 +597,91 @@ def generate_dashboard(
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
       color: var(--ink);
       background: var(--bg);
+      line-height: 1.5;
     }}
     header {{
       background: #ffffff;
       border-bottom: 1px solid var(--line);
-      padding: 28px 32px 22px;
+      padding: 36px 24px 28px;
+      text-align: center;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
     }}
     header h1 {{
-      margin: 0 0 8px;
-      font-size: 30px;
-      line-height: 1.15;
-      letter-spacing: 0;
+      margin: 0 0 10px;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0f172a;
     }}
     header p {{
       margin: 4px 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }}
     main {{
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 32px 24px;
     }}
     .kpis {{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
     }}
     .kpi {{
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }}
+    .kpi:hover {{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }}
+    .kpis > :nth-child(1) {{ border-top: 4px solid var(--muted); }}
+    .kpis > :nth-child(2) {{ border-top: 4px solid var(--blue); }}
+    .kpis > :nth-child(3) {{ border-top: 4px solid var(--gold); }}
+    .kpis > :nth-child(4) {{ border-top: 4px solid var(--green); }}
+    .kpis > :nth-child(5) {{ border-top: 4px solid #148073; }}
+    
     .kpi span {{
       display: block;
       color: var(--muted);
       font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
     }}
     .kpi strong {{
       display: block;
-      font-size: 24px;
-      line-height: 1.1;
+      font-size: 26px;
+      font-weight: 700;
+      color: #0f172a;
+    }}
+    .charts-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
     }}
     section {{
-      margin: 0 0 24px;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
       overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }}
+    section:hover {{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
     }}
     section svg {{
       width: 100%;
@@ -631,13 +689,20 @@ def generate_dashboard(
       display: block;
     }}
     .table-wrap {{
-      padding: 20px;
-      overflow-x: auto;
+      padding: 24px;
     }}
     h2 {{
-      margin: 0 0 14px;
-      font-size: 18px;
-      letter-spacing: 0;
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }}
+    .validation-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
     }}
     table {{
       border-collapse: collapse;
@@ -645,15 +710,34 @@ def generate_dashboard(
       font-size: 14px;
     }}
     th, td {{
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--line);
       text-align: left;
       white-space: nowrap;
     }}
     th {{
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: #f8fafc;
+    }}
+    tbody tr:hover {{
+      background: #f8fafc;
+    }}
+    code {{
+      font-family: Consolas, Monaco, monospace;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #0f172a;
+    }}
+    @media (max-width: 960px) {{
+      .charts-grid {{
+        grid-template-columns: 1fr;
+      }}
     }}
   </style>
 </head>
@@ -667,24 +751,73 @@ def generate_dashboard(
     <div class="kpis">
       {kpi_cards}
     </div>
-    <section>{line_svg}</section>
-    <section>{bar_svg}</section>
-    <section>{heatmap_svg_content}</section>
+    
+    <div class="charts-grid">
+      <section>{line_svg}</section>
+      <section>{bar_svg}</section>
+    </div>
+    
+    <section style="margin-bottom: 24px;">{heatmap_svg_content}</section>
+    
     <section class="table-wrap">
-      <h2>Comparação de performance</h2>
+      <h2>Comparação de Performance</h2>
+      <p style="margin-top: -8px; margin-bottom: 16px; font-size: 14px; color: var(--muted);">
+        Benchmark comparando consultas executadas na tabela fato original vs. tabela agregada física.
+      </p>
       <table>
         <thead>
           <tr>
             <th>Consulta</th>
             <th>Execuções</th>
-            <th>Melhor ms</th>
-            <th>Média ms</th>
-            <th>Linhas</th>
+            <th>Melhor Tempo</th>
+            <th>Tempo Médio</th>
+            <th>Linhas Retornadas</th>
           </tr>
         </thead>
         <tbody>{performance_rows}</tbody>
       </table>
     </section>
+
+    <div class="validation-grid">
+      <section class="table-wrap">
+        <h2>Censo de Linhas</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Objeto do Banco</th>
+              <th>Contagem de Linhas</th>
+            </tr>
+          </thead>
+          <tbody>{row_counts_rows}</tbody>
+        </table>
+      </section>
+
+      <section class="table-wrap">
+        <h2>Integridade Referencial & Nulidades</h2>
+        <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; color: var(--muted); font-weight: 600;">Chaves Estrangeiras Nulas na Fato</h3>
+        <table style="margin-bottom: 24px;">
+          <thead>
+            <tr>
+              <th>null_date_key</th>
+              <th>null_country_key</th>
+              <th>null_source_key</th>
+            </tr>
+          </thead>
+          <tbody>{fk_nulls_rows}</tbody>
+        </table>
+
+        <h3 style="font-size: 14px; margin-top: 0; margin-bottom: 10px; color: var(--muted); font-weight: 600;">Registros Órfãos (Violadores de FK)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Relacionamento</th>
+              <th>Linhas Órfãs</th>
+            </tr>
+          </thead>
+          <tbody>{integrity_rows}</tbody>
+        </table>
+      </section>
+    </div>
   </main>
 </body>
 </html>
