@@ -745,7 +745,7 @@ def generate_dashboard(
   <header>
     <h1>Data Warehouse de Energia e Sustentabilidade</h1>
     <p><strong>Autores:</strong> Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar</p>
-    <p><strong>Entrega:</strong> 03/06/2026 · Dataset: Our World in Data Energy Dataset</p>
+    <p><strong>Dataset:</strong> Our World in Data Energy Dataset</p>
   </header>
   <main>
     <div class="kpis">
