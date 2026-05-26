@@ -3,216 +3,72 @@
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Professor:** Prof. Rafael Gross  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
-**Dataset:** Our World in Data Energy Dataset
+**Data de entrega:** 03/06/2026
 
-## Objetivo
+## Objetivo do Projeto
 
-Construir um Data Warehouse completo em DuckDB para analisar a evolução da geração elétrica por fonte de energia, comparando fontes renováveis, fósseis e de baixo carbono entre países e ao longo do tempo.
+Construir um Data Warehouse em DuckDB para analisar a evolução da geração elétrica por fonte de energia, comparando fontes renováveis, fósseis e de baixo carbono entre países e ao longo do tempo.
 
-O grão da tabela fato é: **uma linha por país, ano e fonte de energia**.
+O grão da tabela fato `dw.fact_energy_generation` é: **uma linha por país, ano e fonte de energia**.
 
+## Dataset Utilizado
 
-Arquivos principais da entrega:
+O projeto utiliza o **Our World in Data Energy Dataset**, disponibilizado publicamente pela Our World in Data.
 
-- Relatório técnico em PDF (estruturado em padrão acadêmico inspirado nas normas ABNT, especialmente NBR 14724 e NBR 6023): `docs/relatorio_tecnico.pdf`
-- Relatório técnico em Markdown (estruturado em padrão acadêmico inspirado nas normas ABNT): `docs/relatorio_tecnico.md`
-- Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
-- Gráficos: `outputs/figures/`
-- Banco DuckDB: `database/energy_dw.duckdb`
-- Dataset CSV original: `data/raw/owid-energy-data.csv`
-- Consultas exportadas: `outputs/queries/`
-- Dicionário de dados: `docs/dicionario_dados.md`
-- Diagrama do modelo estrela: `docs/diagrama_modelo_estrela.md` e `docs/diagrama_modelo_estrela.png`
-- Roteiro de apresentação: `docs/roteiro_apresentacao.md`
+- Arquivo original: `data/raw/owid-energy-data.csv`
+- Fonte: `https://owid-public.owid.io/data/energy/owid-energy-data.csv`
 
-Para instalar dependências:
-
-```powershell
-pip install -r requirements.txt
-```
-
-Para executar o projeto:
-
-```powershell
-python run_all.py
-```
-
-No Windows/VSCode, caso o Python não esteja no PATH, use:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
-```
-
-## Como Instalar Dependências
-
-Crie um ambiente virtual e instale as bibliotecas:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-Dependências principais:
-
-- `duckdb`: banco analítico principal.
-- `pandas`: exportação e apoio à geração de visualizações.
-
-## Como Executar
-
-Execute o pipeline completo:
-
-```powershell
-python run_all.py
-```
-
-No Windows/VSCode, se aparecer erro de `python` não encontrado ou bloqueio de execução de scripts, use:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
-```
-
-Esse script instala as dependências necessárias e executa o projeto.
-
-Evite executar com Python 3.14 global do VSCode. Este projeto foi validado com Python 3.12. Se o VSCode insistir em outro interpretador, use `Ctrl+Shift+P` > `Python: Select Interpreter` > `Enter interpreter path` e selecione:
-
-```text
-.\.venv\Scripts\python.exe
-```
-
-O script:
-
-- baixa `owid-energy-data.csv` se ele ainda não existir;
-- cria o banco DuckDB em `database/energy_dw.duckdb`;
-- executa os scripts SQL na ordem exigida;
-- exporta consultas e validações para `outputs/queries`;
-- gera gráficos SVG em `outputs/figures`;
-- gera o dashboard em `outputs/dashboard.html` e também em `dashboard.html`.
-
-## Como Abrir o Banco DuckDB
-
-Pelo Python:
-
-```python
-import duckdb
-conn = duckdb.connect("database/energy_dw.duckdb")
-conn.sql("SELECT * FROM dw.fact_energy_generation LIMIT 10").show()
-```
-
-Ou pela CLI do DuckDB, se instalada:
-
-```powershell
-duckdb database/energy_dw.duckdb
-```
-
-## Estrutura das Pastas
+## Estrutura do Projeto
 
 ```text
 .
-├── data/
-│   └── raw/
-│       └── owid-energy-data.csv
-├── database/
-│   └── energy_dw.duckdb
-├── docs/
-│   ├── dicionario_dados.md
-│   ├── diagrama_modelo_estrela.md
-│   ├── diagrama_modelo_estrela.png
-│   ├── relatorio_tecnico.md
-│   ├── relatorio_tecnico.pdf
-│   └── roteiro_apresentacao.md
-├── outputs/
-│   ├── dashboard.html
-│   ├── figures/
-│   └── queries/
-├── scripts/
-│   ├── 00_staging.sql
-│   ├── 01_oltp.sql
-│   ├── 02_dw_model.sql
-│   ├── 03_etl_load.sql
-│   ├── 04_analytics.sql
-│   └── 05_performance.sql
-├── dashboard.html
-├── requirements.txt
-├── run_project.ps1
-└── run_all.py
+├── data/raw/                         # Dataset original
+├── database/                         # Banco DuckDB gerado
+├── docs/                             # Documentação acadêmica e técnica
+├── outputs/                          # Consultas, gráficos e dashboard
+├── scripts/                          # Pipeline SQL e geração de artefatos
+├── dashboard.html                    # Cópia principal do dashboard
+├── requirements.txt                  # Dependências Python
+└── run_all.py                        # Execução completa do projeto
 ```
 
-## Scripts SQL
+## Execução
 
-1. `scripts/00_staging.sql`: lê o CSV original e padroniza colunas relevantes.
-2. `scripts/01_oltp.sql`: cria tabelas intermediárias normalizadas.
-3. `scripts/02_dw_model.sql`: define dimensões e fato no modelo estrela.
-4. `scripts/03_etl_load.sql`: carrega dimensões, SCD Type 2 e fato.
-5. `scripts/04_analytics.sql`: cria consultas analíticas e validações.
-6. `scripts/05_performance.sql`: cria tabela agregada e consultas de comparação.
-
-## Consultas Analíticas Entregues
-
-- Q1: evolução da geração solar, eólica e hidrelétrica no Brasil por ano.
-- Q2: Top 10 países com maior geração renovável no ano mais recente disponível.
-- Q3: geração elétrica por grupo de fonte e país no ano mais recente.
-- Q4: cohort de países que ultrapassaram 1% de geração solar pela primeira vez.
-- Q5: KPI de percentual renovável sobre geração total modelada por país e ano.
-
-## Visualizações
-
-- Linha: `outputs/figures/brazil_renewable_evolution.svg`
-- Barras: `outputs/figures/top10_renewable_latest_year.svg`
-- Heatmap: `outputs/figures/brazil_source_share_heatmap.svg`
-- Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
-
-## Entrega pelo GitHub
-
-O repositório contém todos os arquivos necessários para avaliação, incluindo código, scripts SQL, documentação, dataset bruto, banco DuckDB, consultas exportadas, gráficos, dashboard e relatório técnico em PDF.
-
-Para reproduzir a entrega a partir do repositório:
-
-```powershell
+```bash
 pip install -r requirements.txt
 python run_all.py
-python scripts/generate_delivery_artifacts.py
 ```
 
-No Windows, se o Python ou o `pip` não estiverem no PATH, execute:
+## Principais Entregáveis
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
-```
+- `database/energy_dw.duckdb`: banco de dados DuckDB com o Data Warehouse.
+- `docs/relatorio_tecnico.pdf`: relatório técnico acadêmico em PDF.
+- `docs/relatorio_tecnico.md`: versão Markdown do relatório técnico.
+- `docs/dicionario_dados.md`: dicionário de dados.
+- `docs/diagrama_modelo_estrela.md`: documentação do modelo estrela.
+- `docs/diagrama_modelo_estrela.png`: diagrama visual do modelo estrela.
+- `docs/roteiro_apresentacao.md`: roteiro de apresentação do projeto.
+- `outputs/dashboard.html`: dashboard HTML.
+- `outputs/figures/`: gráficos gerados.
+- `outputs/queries/`: consultas analíticas e validações exportadas.
+- `scripts/`: scripts SQL do pipeline e script de geração de artefatos.
 
-Localização dos entregáveis principais:
+## Checklist Acadêmico
 
-- Relatório técnico em PDF: `docs/relatorio_tecnico.pdf`
-- Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
-- Gráficos: `outputs/figures/`
-- Banco DuckDB: `database/energy_dw.duckdb`
-- Consultas exportadas: `outputs/queries/`
-- Roteiro de apresentação: `docs/roteiro_apresentacao.md`
-
-## Entregáveis
-
-- Código SQL e Python do pipeline.
-- Banco DuckDB gerado após execução.
-- Dataset CSV original.
-- Relatório técnico em PDF.
-- Roteiro de apresentação.
-- Consultas analíticas exportadas em CSV.
-- Validações de qualidade de dados.
-- Visualizações e dashboard HTML.
-- Documentação técnica, dicionário de dados e diagrama do modelo estrela.
-
-## Checklist de Avaliação
-
-- [x] 3 dimensões ou mais.
-- [x] 1 tabela fato.
-- [x] Dimensão de data.
-- [x] SCD Type 2.
-- [x] Chaves substitutas.
-- [x] Pipeline idempotente.
-- [x] Validações.
-- [x] 5 consultas analíticas.
-- [x] 4 visualizações.
-- [x] Tabela agregada de performance.
+- [x] Uso do DuckDB como banco principal.
+- [x] Camada de staging.
+- [x] Camada OLTP intermediária.
+- [x] Modelo dimensional em estrela.
+- [x] Dimensão de data: `dw.dim_date`.
+- [x] Dimensão de país com SCD Type 2: `dw.dim_country`.
+- [x] Dimensão de fonte de energia: `dw.dim_energy_source`.
+- [x] Tabela fato: `dw.fact_energy_generation`.
+- [x] Chaves substitutas nas dimensões.
+- [x] Grão da fato definido como país, ano e fonte de energia.
+- [x] Pipeline SQL idempotente.
+- [x] Validações de qualidade e integridade.
+- [x] Cinco consultas analíticas obrigatórias.
+- [x] Visualizações e dashboard HTML.
+- [x] Tabela agregada para análise de performance.
 - [x] Relatório técnico em PDF.
-- [x] Dashboard.
-- [x] Banco `.duckdb`.
+- [x] Banco `.duckdb` incluído para entrega via GitHub.
