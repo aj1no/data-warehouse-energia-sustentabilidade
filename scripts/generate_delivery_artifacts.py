@@ -10,6 +10,7 @@ Gera artefatos finais de entrega pelo GitHub, com arquivos normalizados:
 
 from __future__ import annotations
 
+import csv
 import re
 import sys
 from html import escape
@@ -21,6 +22,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import (
+    Image as ReportImage,
     ListFlowable,
     ListItem,
     Paragraph,
@@ -35,9 +37,16 @@ from reportlab.pdfgen import canvas
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DOCS_DIR = PROJECT_ROOT / "docs"
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+FIGURES_DIR = OUTPUTS_DIR / "figures"
+QUERIES_DIR = OUTPUTS_DIR / "queries"
+DB_PATH = PROJECT_ROOT / "database" / "energy_dw.duckdb"
 REPORT_MD = DOCS_DIR / "relatorio_tecnico.md"
 REPORT_PDF = DOCS_DIR / "relatorio_tecnico.pdf"
 DIAGRAM_PNG = DOCS_DIR / "diagrama_modelo_estrela.png"
+LINE_CHART_PNG = FIGURES_DIR / "brazil_renewable_evolution.png"
+BAR_CHART_PNG = FIGURES_DIR / "top10_renewable_latest_year.png"
+HEATMAP_PNG = FIGURES_DIR / "brazil_source_share_heatmap.png"
 
 
 def clean_inline_markdown(text: str) -> str:
@@ -87,6 +96,13 @@ def markdown_table_to_reportlab(lines: list[str], styles) -> Table:
     return table
 
 
+def report_image_flowable(path: Path, max_width: float = 16.0 * cm, max_height: float = 9.5 * cm) -> ReportImage:
+    with Image.open(path) as image:
+        width, height = image.size
+    scale = min(max_width / width, max_height / height, 1)
+    return ReportImage(str(path), width=width * scale, height=height * scale)
+
+
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -106,9 +122,9 @@ class NumberedCanvas(canvas.Canvas):
 
     def draw_page_number(self, page_count):
         # ABNT: capa (pagina 1) e folha de rosto (pagina 2) nao possuem numeracao.
-        # Paginas pre-textuais contam na numeracao, mas a numeracao so eh exibida a partir da Introducao (pagina 5)
+        # Paginas pre-textuais contam na numeracao, mas a numeracao so eh exibida a partir da Introducao (pagina 6)
         # no canto superior direito (2cm da borda superior e 2cm da borda direita).
-        if self._pageNumber >= 5:
+        if self._pageNumber >= 6:
             self.saveState()
             self.setFont("Helvetica", 10)
             self.drawRightString(21.0 * cm - 2.0 * cm, 29.7 * cm - 2.0 * cm, str(self._pageNumber))
@@ -180,6 +196,18 @@ def generate_report_pdf() -> None:
     ))
 
     styles.add(ParagraphStyle(
+        name="FigureCaption",
+        parent=styles["Normal"],
+        fontName="Helvetica-Bold",
+        fontSize=10,
+        leading=13,
+        alignment=1,
+        firstLineIndent=0,
+        spaceBefore=8,
+        spaceAfter=6,
+    ))
+
+    styles.add(ParagraphStyle(
         name="PreTextualBody",
         parent=styles["Normal"],
         fontName="Helvetica",
@@ -228,6 +256,19 @@ def generate_report_pdf() -> None:
 
         # Ignorar linhas vazias
         if not line.strip():
+            i += 1
+            continue
+
+        image_match = re.match(r"^!\[(.+?)\]\((.+?)\)$", line.strip())
+        if image_match:
+            caption, relative_path = image_match.groups()
+            image_path = PROJECT_ROOT / relative_path
+            if image_path.exists():
+                story.append(Paragraph(clean_inline_markdown(caption), styles["FigureCaption"]))
+                story.append(report_image_flowable(image_path))
+                story.append(Spacer(1, 0.25 * cm))
+            else:
+                story.append(Paragraph(clean_inline_markdown(f"{caption} (imagem não encontrada)"), styles["FigureCaption"]))
             i += 1
             continue
 
@@ -282,8 +323,8 @@ def generate_report_pdf() -> None:
             elif stripped.startswith("### "):
                 story.append(Paragraph(clean_inline_markdown(stripped[4:]), styles["Heading3"]))
             else:
-                # No resumo (pagina 3), nao queremos recuo de paragrafo ABNT
-                style = styles["PreTextualBody"] if page_count == 3 else styles["BodyText"]
+                # No resumo e no abstract, nao queremos recuo de paragrafo ABNT.
+                style = styles["PreTextualBody"] if page_count in (3, 4) else styles["BodyText"]
                 story.append(Paragraph(clean_inline_markdown(stripped), style))
                 
         i += 1
@@ -311,6 +352,207 @@ def get_font(size: int, bold: bool = False):
         if Path(candidate).exists():
             return ImageFont.truetype(candidate, size)
     return ImageFont.load_default()
+
+
+def read_csv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open(newline="", encoding="utf-8") as csv_file:
+        return list(csv.DictReader(csv_file))
+
+
+def draw_chart_title(draw: ImageDraw.ImageDraw, title: str, subtitle: str | None = None) -> None:
+    draw.text((48, 34), title, font=get_font(30, bold=True), fill="#17212b")
+    if subtitle:
+        draw.text((48, 76), subtitle, font=get_font(18), fill="#526171")
+
+
+def report_color_for_source(source: str) -> str:
+    return {
+        "Solar": "#e9b44c",
+        "Wind": "#3a7ca5",
+        "Hydro": "#2a9d8f",
+        "Biofuel": "#5a9e6f",
+        "Other renewable": "#7cb7a8",
+        "Nuclear": "#6a4c93",
+        "Gas": "#8b6f47",
+        "Coal": "#5a4a42",
+        "Oil": "#9a6b59",
+    }.get(source, "#264653")
+
+
+def interpolate_report_color(value: float, max_value: float) -> tuple[int, int, int]:
+    ratio = 0 if max_value <= 0 else max(0, min(1, value / max_value))
+    start = (244, 241, 232)
+    mid = (233, 180, 76)
+    end = (42, 157, 143)
+    if ratio < 0.5:
+        local = ratio / 0.5
+        return tuple(round(start[i] + (mid[i] - start[i]) * local) for i in range(3))
+    local = (ratio - 0.5) / 0.5
+    return tuple(round(mid[i] + (end[i] - mid[i]) * local) for i in range(3))
+
+
+def generate_line_chart_png() -> None:
+    rows = read_csv_rows(QUERIES_DIR / "analytics_q1_brazil_renewable_evolution.csv")
+    width, height = 1400, 760
+    image = Image.new("RGB", (width, height), "#fbfcfd")
+    draw = ImageDraw.Draw(image)
+    draw_chart_title(draw, "Brasil: evolução de solar, eólica e hidrelétrica", "Geração elétrica anual em TWh")
+
+    if not rows:
+        draw.text((60, 140), "Sem dados para exibir.", font=get_font(22), fill="#526171")
+        image.save(LINE_CHART_PNG)
+        return
+
+    margin = {"left": 105, "right": 240, "top": 125, "bottom": 82}
+    plot_w = width - margin["left"] - margin["right"]
+    plot_h = height - margin["top"] - margin["bottom"]
+    years = sorted({int(row["year"]) for row in rows})
+    values = [float(row["electricity_twh"]) for row in rows]
+    max_y = max(10, int(max(values) / 10 + 1) * 10)
+
+    def x_scale(year: int) -> float:
+        return margin["left"] + ((year - years[0]) / max(years[-1] - years[0], 1)) * plot_w
+
+    def y_scale(value: float) -> float:
+        return margin["top"] + plot_h - (value / max_y) * plot_h
+
+    axis_font = get_font(17)
+    for index in range(6):
+        value = max_y * index / 5
+        y = y_scale(value)
+        draw.line((margin["left"], y, margin["left"] + plot_w, y), fill="#d9e0e6", width=1)
+        draw.text((30, y - 10), f"{value:.0f}", font=axis_font, fill="#526171")
+    tick_step = max(1, len(years) // 8)
+    for index, year in enumerate(years):
+        if index % tick_step == 0 or year == years[-1]:
+            x = x_scale(year)
+            draw.line((x, margin["top"], x, margin["top"] + plot_h), fill="#eef2f5", width=1)
+            draw.text((x - 22, height - 50), str(year), font=axis_font, fill="#526171")
+
+    draw.line((margin["left"], margin["top"] + plot_h, margin["left"] + plot_w, margin["top"] + plot_h), fill="#8996a3", width=2)
+    draw.line((margin["left"], margin["top"], margin["left"], margin["top"] + plot_h), fill="#8996a3", width=2)
+
+    grouped: dict[str, list[tuple[int, float]]] = {}
+    for row in rows:
+        grouped.setdefault(row["source_name"], []).append((int(row["year"]), float(row["electricity_twh"])))
+    for legend_index, source in enumerate(["Hydro", "Solar", "Wind"]):
+        points = [(x_scale(year), y_scale(value)) for year, value in sorted(grouped.get(source, []))]
+        if len(points) >= 2:
+            draw.line(points, fill=report_color_for_source(source), width=5, joint="curve")
+        for point in points[:: max(1, len(points) // 12)]:
+            x, y = point
+            draw.ellipse((x - 5, y - 5, x + 5, y + 5), fill=report_color_for_source(source))
+        legend_y = margin["top"] + legend_index * 34
+        draw.rectangle((width - 190, legend_y - 12, width - 166, legend_y + 12), fill=report_color_for_source(source))
+        draw.text((width - 155, legend_y - 11), source, font=get_font(18), fill="#24313d")
+
+    image.save(LINE_CHART_PNG)
+
+
+def generate_bar_chart_png() -> None:
+    rows = read_csv_rows(QUERIES_DIR / "analytics_q2_top10_renewable_latest_year.csv")
+    width, height = 1400, 780
+    image = Image.new("RGB", (width, height), "#fbfcfd")
+    draw = ImageDraw.Draw(image)
+    year = rows[0]["year"] if rows else ""
+    draw_chart_title(draw, "Top 10 países por geração renovável", f"Ano mais recente disponível: {year}")
+
+    if not rows:
+        draw.text((60, 140), "Sem dados para exibir.", font=get_font(22), fill="#526171")
+        image.save(BAR_CHART_PNG)
+        return
+
+    rows = sorted(rows, key=lambda row: float(row["renewable_twh"]))
+    max_value = max(float(row["renewable_twh"]) for row in rows)
+    left, top, plot_w = 285, 125, 980
+    bar_h, gap = 40, 18
+    font = get_font(19)
+    for index, row in enumerate(rows):
+        y = top + index * (bar_h + gap)
+        value = float(row["renewable_twh"])
+        bar_w = (value / max_value) * plot_w
+        color = "#2a9d8f" if index % 2 == 0 else "#3a7ca5"
+        draw.text((45, y + 8), row["country_name"], font=font, fill="#24313d")
+        draw.rounded_rectangle((left, y, left + bar_w, y + bar_h), radius=5, fill=color)
+        draw.text((left + bar_w + 12, y + 8), f"{value:,.0f} TWh".replace(",", "."), font=font, fill="#526171")
+    draw.line((left, top + len(rows) * (bar_h + gap), left + plot_w, top + len(rows) * (bar_h + gap)), fill="#8996a3", width=2)
+    image.save(BAR_CHART_PNG)
+
+
+def generate_heatmap_png() -> None:
+    width, height = 1500, 760
+    image = Image.new("RGB", (width, height), "#fbfcfd")
+    draw = ImageDraw.Draw(image)
+    draw_chart_title(draw, "Brasil: participação das fontes por ano", "% da eletricidade por fonte")
+
+    if not DB_PATH.exists():
+        draw.text((60, 140), "Banco DuckDB não encontrado.", font=get_font(22), fill="#526171")
+        image.save(HEATMAP_PNG)
+        return
+
+    import duckdb
+
+    with duckdb.connect(str(DB_PATH), read_only=True) as conn:
+        rows = conn.execute(
+            """
+            SELECT
+                d.year,
+                s.source_name,
+                AVG(f.electricity_share_pct) AS electricity_share_pct
+            FROM dw.fact_energy_generation AS f
+            INNER JOIN dw.dim_date AS d ON f.date_key = d.date_key
+            INNER JOIN dw.dim_country AS c ON f.country_key = c.country_key
+            INNER JOIN dw.dim_energy_source AS s ON f.source_key = s.source_key
+            WHERE c.country_name = 'Brazil'
+              AND f.electricity_share_pct IS NOT NULL
+            GROUP BY d.year, s.source_name
+            ORDER BY d.year, s.source_name
+            """
+        ).fetchall()
+
+    if not rows:
+        draw.text((60, 140), "Sem dados para exibir.", font=get_font(22), fill="#526171")
+        image.save(HEATMAP_PNG)
+        return
+
+    max_year = max(int(row[0]) for row in rows)
+    recent_cutoff = max_year - 29
+    rows = [row for row in rows if int(row[0]) >= recent_cutoff]
+    years = sorted({int(row[0]) for row in rows})
+    sources = ["Hydro", "Wind", "Solar", "Biofuel", "Other renewable", "Nuclear", "Gas", "Coal", "Oil"]
+    present_sources = {str(row[1]) for row in rows}
+    sources = [source for source in sources if source in present_sources]
+    values = {(str(source), int(year)): float(value or 0) for year, source, value in rows}
+    max_value = max(values.values()) if values else 1
+
+    left, top = 235, 125
+    plot_w, plot_h = 1180, 510
+    cell_w = plot_w / max(len(years), 1)
+    cell_h = plot_h / max(len(sources), 1)
+    label_font = get_font(17)
+    for row_index, source in enumerate(sources):
+        y = top + row_index * cell_h
+        draw.text((45, y + cell_h * 0.35), source, font=label_font, fill="#24313d")
+        for col_index, year in enumerate(years):
+            x = left + col_index * cell_w
+            value = values.get((source, year), 0)
+            draw.rectangle((x, y, x + cell_w + 1, y + cell_h + 1), fill=interpolate_report_color(value, max_value))
+
+    tick_step = max(1, len(years) // 10)
+    for index, year in enumerate(years):
+        if index % tick_step == 0 or year == years[-1]:
+            x = left + index * cell_w + cell_w / 2
+            draw.text((x - 22, height - 78), str(year), font=label_font, fill="#526171")
+    image.save(HEATMAP_PNG)
+
+
+def generate_report_figure_pngs() -> None:
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    generate_line_chart_png()
+    generate_bar_chart_png()
+    generate_heatmap_png()
 
 
 def draw_box(draw: ImageDraw.ImageDraw, xy, title: str, fields: list[str], fill: str, outline: str) -> None:
@@ -450,8 +692,9 @@ def generate_star_schema_png() -> None:
 
 
 def main() -> None:
-    generate_report_pdf()
     generate_star_schema_png()
+    generate_report_figure_pngs()
+    generate_report_pdf()
     print(f"PDF gerado: {REPORT_PDF}")
     print(f"PNG gerado: {DIAGRAM_PNG}")
 

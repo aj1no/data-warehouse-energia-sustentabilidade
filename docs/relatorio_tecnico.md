@@ -45,12 +45,22 @@ Relatório técnico e acadêmico apresentado ao Curso de Tecnologia em Ciência 
 
 Este relatório apresenta o desenvolvimento de um Data Warehouse (DW) completo, projetado em DuckDB, SQL e Python, destinado a analisar a evolução da geração elétrica mundial por fonte de energia. O principal objetivo é classificar e comparar a geração elétrica de fontes renováveis, fósseis e de baixo carbono entre países e ao longo do tempo, utilizando o dataset público *Our World in Data Energy Dataset*. O modelo dimensional adota a modelagem estrela (Star Schema) de Kimball, contendo uma tabela fato centralizada no grão de país, ano e fonte de energia, e três dimensões de suporte: data, país (com histórico implementado via Slowly Changing Dimension - SCD Tipo 2 por faixas socioeconômicas) e fonte de energia. Para otimizar as consultas analíticas, foi projetada uma tabela agregada anual. As análises englobam a evolução temporal da matriz elétrica brasileira, o ranking dos principais países geradores de fontes renováveis, a agregação multidimensional, a análise de cohort para a penetração de energia solar e o cálculo de KPIs de negócio. O pipeline implementado é totalmente idempotente, garantindo reprodutibilidade das cargas. Os testes de validação de integridade referencial demonstraram ausência de chaves órfãs e total consistência lógica dos dados consolidados no banco de dados colunar DuckDB.
 <br/><br/>
-<b>Palavras-chave:</b> Data Warehouse. Modelagem Dimensional. DuckDB. Transição Energética. SCD Tipo 2.
+**Palavras-chave:** Data Warehouse. Modelagem Dimensional. DuckDB. Transição Energética. SCD Tipo 2.
+
+---
+
+### ABSTRACT
+
+This report presents the development of a complete Data Warehouse (DW), designed with DuckDB, SQL and Python, to analyze the evolution of global electricity generation by energy source. The main objective is to classify and compare electricity generation from renewable, fossil and low-carbon sources across countries and over time, using the public *Our World in Data Energy Dataset*. The dimensional model follows Kimball's Star Schema approach, with a fact table defined at the grain of country, year and energy source, supported by three dimensions: date, country and energy source. The country dimension implements Slowly Changing Dimension Type 2 (SCD Type 2) to preserve historical changes in population and GDP per capita bands. The project also includes analytical queries, quality validations, visualizations, a dashboard and a performance comparison based on an aggregated annual table.
+<br/><br/>
+**Keywords:** Data Warehouse. Dimensional Modeling. DuckDB. Energy Transition. SCD Type 2.
 
 ---
 
 ### SUMÁRIO ESTRUTURADO
 
+* Resumo
+* Abstract
 * 1 Introdução
 * 2 Fundamentação Teórica
   * 2.1 Modelagem Dimensional de Kimball
@@ -116,6 +126,8 @@ A metodologia de desenvolvimento compreende as seguintes fases:
 
 O modelo analítico do projeto adota a arquitetura estrela clássica com relacionamentos de integridade referencial implementados através de chaves substitutas (*surrogate keys*).
 
+![Figura 1 - Diagrama visual do modelo estrela](docs/diagrama_modelo_estrela.png)
+
 ### 4.1 Grão da Tabela Fato
 O grão da tabela fato `dw.fact_energy_generation` é definido como: **uma linha por país, ano e fonte de energia**. Isso assegura granularidade suficiente para detalhar a transição da matriz energética em nível nacional sem inflar desnecessariamente o volume de armazenamento analítico.
 
@@ -165,6 +177,12 @@ A validação analítica gerou quatro visualizações obrigatórias salvas em fo
 2. **Gráfico de Barras**: Exibe o ranking dos top 10 maiores produtores de eletricidade limpa em 2025.
 3. **Heatmap Analítico**: Representa de forma matricial a evolução percentual de cada fonte de geração elétrica na matriz do Brasil ao longo dos anos.
 4. **Dashboard HTML Integrado**: Uma interface estática web unificada que centraliza KPIs de negócio essenciais e renderiza nativamente os gráficos SVG associados e tabelas de benchmark.
+
+![Figura 2 - Evolução da geração solar, eólica e hidrelétrica no Brasil](outputs/figures/brazil_renewable_evolution.png)
+
+![Figura 3 - Top 10 países por geração renovável no ano mais recente](outputs/figures/top10_renewable_latest_year.png)
+
+![Figura 4 - Heatmap da participação das fontes na eletricidade brasileira](outputs/figures/brazil_source_share_heatmap.png)
 
 ---
 
