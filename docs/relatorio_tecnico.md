@@ -55,14 +55,23 @@ This report presents the development of a complete Data Warehouse (DW), designed
 <br/><br/>
 **Keywords:** Data Warehouse. Dimensional Modeling. DuckDB. Energy Transition. SCD Type 2.
 
+---
+
 ### SUMÁRIO ESTRUTURADO
 
 * Resumo
 * Abstract
 * 1 Introdução
 * 2 Fundamentação Teórica
+  * 2.1 Modelagem Dimensional de Kimball
+  * 2.2 Camadas de Dados: Staging e OLTP Intermediário
+  * 2.3 Histórico de Dimensões com SCD Tipo 2
+  * 2.4 Banco de Dados Analítico DuckDB
 * 3 Metodologia e Fonte de Dados
 * 4 Modelagem Dimensional do Data Warehouse
+  * 4.1 Grão da Tabela Fato
+  * 4.2 Atributos das Dimensões
+  * 4.3 Definição das Métricas
 * 5 Pipeline de Carga (ETL) e Idempotência
 * 6 Consultas Analíticas e KPIs de Negócio
 * 7 Visualizações Gráficas e Dashboard
