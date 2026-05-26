@@ -1,7 +1,7 @@
 # Data Warehouse de Energia e Sustentabilidade
 
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
-**Professor:** Prof. Rafael Gross  
+**Professor:** Rafael Gross  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
 
 
