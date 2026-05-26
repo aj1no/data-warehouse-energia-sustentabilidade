@@ -737,6 +737,18 @@ def main() -> None:
 
     print("Pipeline concluído com sucesso.")
 
+    try:
+        import webbrowser
+        from pathlib import Path
+
+        dashboard_path = Path("outputs/dashboard.html").resolve()
+
+        print("Abrindo dashboard HTML no navegador padrão...")
+        webbrowser.open(dashboard_path.as_uri())
+
+    except Exception as e:
+        print(f"Não foi possível abrir o dashboard automaticamente: {e}")
+
 
 if __name__ == "__main__":
     main()

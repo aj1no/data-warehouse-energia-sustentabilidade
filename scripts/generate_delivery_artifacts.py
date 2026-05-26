@@ -96,7 +96,7 @@ def markdown_table_to_reportlab(lines: list[str], styles) -> Table:
     return table
 
 
-def report_image_flowable(path: Path, max_width: float = 16.0 * cm, max_height: float = 9.5 * cm) -> ReportImage:
+def report_image_flowable(path: Path, max_width: float = 15.5 * cm, max_height: float = 3.0 * cm) -> ReportImage:
     with Image.open(path) as image:
         width, height = image.size
     scale = min(max_width / width, max_height / height, 1)

@@ -1,9 +1,9 @@
 # Data Warehouse de Energia e Sustentabilidade
 
 **Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
-**Professor:** Rafael Gross  
+**Professor:** Prof. Rafael Gross  
 **Disciplina:** Banco e Armazém de Dados em Ciências de Dados  
-
+**Data de entrega:** 03/06/2026
 
 ## Objetivo do Projeto
 
@@ -52,6 +52,7 @@ python run_all.py
 - `outputs/figures/`: gráficos gerados.
 - `outputs/queries/`: consultas analíticas e validações exportadas.
 - `scripts/`: scripts SQL do pipeline e script de geração de artefatos.
+- `run_project.ps1`: alternativa opcional de execução em ambiente Windows.
 
 ## Checklist Acadêmico
 
