@@ -3,6 +3,7 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Requirements = Join-Path $ProjectRoot "requirements.txt"
 $BundledPython = Join-Path $env:USERPROFILE ".cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
+$env:PYTHONUSERBASE = Join-Path $ProjectRoot ".tmp\pyuser"
 
 function Test-PythonWithPip {
     param([string]$PythonCommand)

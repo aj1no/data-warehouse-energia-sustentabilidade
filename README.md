@@ -74,7 +74,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
 
 Esse script instala as dependências necessárias e executa o projeto.
 
-Evite executar com Python 3.14 global do VSCode. Este projeto foi validado com Python 3.12; a pasta `.vscode` já aponta para `.venv\Scripts\python.exe`. Se o VSCode insistir em outro interpretador, use `Ctrl+Shift+P` > `Python: Select Interpreter` > `Enter interpreter path` e selecione:
+Evite executar com Python 3.14 global do VSCode. Este projeto foi validado com Python 3.12. Se o VSCode insistir em outro interpretador, use `Ctrl+Shift+P` > `Python: Select Interpreter` > `Enter interpreter path` e selecione:
 
 ```text
 .\.venv\Scripts\python.exe
@@ -161,6 +161,33 @@ duckdb database/energy_dw.duckdb
 - Barras: `outputs/figures/top10_renewable_latest_year.svg`
 - Heatmap: `outputs/figures/brazil_source_share_heatmap.svg`
 - Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
+
+## Entrega pelo GitHub
+
+O repositório contém todos os arquivos necessários para avaliação, incluindo código, scripts SQL, documentação, dataset bruto, banco DuckDB, consultas exportadas, gráficos, dashboard e relatório técnico em PDF.
+
+Para reproduzir a entrega a partir do repositório:
+
+```powershell
+pip install -r requirements.txt
+python run_all.py
+python scripts/generate_delivery_artifacts.py
+```
+
+No Windows, se o Python ou o `pip` não estiverem no PATH, execute:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\run_project.ps1
+```
+
+Localização dos entregáveis principais:
+
+- Relatório técnico em PDF: `docs/relatorio_tecnico.pdf`
+- Dashboard HTML: `outputs/dashboard.html` e `dashboard.html`
+- Gráficos: `outputs/figures/`
+- Banco DuckDB: `database/energy_dw.duckdb`
+- Consultas exportadas: `outputs/queries/`
+- Roteiro de apresentação: `docs/roteiro_apresentacao.md`
 
 ## Entregáveis
 

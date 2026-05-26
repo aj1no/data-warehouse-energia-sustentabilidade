@@ -19,7 +19,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-import pandas as pd # type: ignore
+import pandas as pd
 
 try:
     import duckdb

@@ -1,6 +1,5 @@
 .venv/
 .deps/
-.deps_old/
 .tmp/
 __pycache__/
 *.pyc
