@@ -105,24 +105,3 @@ python run_all.py
 ```
 
 Ao final da execução, o pipeline gera o banco DuckDB, exporta as consultas, cria os gráficos e abre automaticamente o dashboard HTML no navegador padrão.
-
----
-
-## 9. Checklist Acadêmico
-
-* [x] Uso do DuckDB como banco principal.
-* [x] Camada de staging.
-* [x] Camada OLTP intermediária.
-* [x] Modelo dimensional em estrela.
-* [x] Dimensão de data.
-* [x] Dimensão de país com SCD Type 2.
-* [x] Dimensão de fonte de energia.
-* [x] Tabela fato com grão definido.
-* [x] Chaves substitutas nas dimensões.
-* [x] Pipeline SQL idempotente.
-* [x] Validações de qualidade e integridade.
-* [x] Cinco consultas analíticas.
-* [x] Visualizações e dashboard HTML.
-* [x] Tabela agregada para análise de performance.
-* [x] Relatório técnico em PDF.
-* [x] Banco `.duckdb` incluído para entrega via GitHub.
