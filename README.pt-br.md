@@ -6,7 +6,7 @@
 [![DuckDB](https://img.shields.io/badge/DuckDB-0.10-FFF700?style=flat-square&logo=duckdb&logoColor=black)](https://duckdb.org/)
 [![SQL](https://img.shields.io/badge/SQL-ANSI-orange?style=flat-square&logo=sqlite&logoColor=white)](https://en.wikipedia.org/wiki/SQL)
 [![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/aj1no/data-warehouse-energia-sustentabilidade/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/aj1no/data-warehouse-energia-sustentabilidade/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/aj1no/energy-sustainability-dw/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/aj1no/energy-sustainability-dw/actions)
 
 * **Instituição:** Faculdade de Tecnologia de Jundiaí (FATEC Jundiaí)
 * **Disciplina:** Banco e Armazém de Dados em Ciências de Dados
