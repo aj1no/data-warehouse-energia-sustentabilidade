@@ -1,107 +1,112 @@
-# Data Warehouse de Energia e Sustentabilidade com DuckDB
+# Energy and Sustainability Data Warehouse with DuckDB
 
-**Instituição**: Faculdade de Tecnologia de Jundiaí (FATEC Jundiaí)
-**Disciplina**: Banco e Armazém de Dados em Ciências de Dados
-**Professor**: Rafael Gross
-**Autores**:
-* Rodolfo Vinicius Cima Takemoto
-* Tiago Galhardo Avelar
+*[Ler em Português](README.pt-br.md)*
 
----
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![DuckDB](https://img.shields.io/badge/DuckDB-0.10-FFF700?style=flat-square&logo=duckdb&logoColor=black)](https://duckdb.org/)
+[![SQL](https://img.shields.io/badge/SQL-ANSI-orange?style=flat-square&logo=sqlite&logoColor=white)](https://en.wikipedia.org/wiki/SQL)
+[![License MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/aj1no/data-warehouse-energia-sustentabilidade/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/aj1no/data-warehouse-energia-sustentabilidade/actions)
 
-## 1. Descrição do Problema
-
-A transição energética mundial exige o acompanhamento histórico da geração elétrica por diferentes fontes de energia. Entretanto, datasets públicos sobre energia costumam estar em formato amplo, com muitas colunas por fonte, o que dificulta análises comparativas, consultas históricas e construção de indicadores por país, ano e tipo de fonte.
-
-Este projeto organiza esses dados em um **Data Warehouse dimensional**, permitindo analisar a evolução da geração elétrica renovável, fóssil e de baixo carbono entre países e ao longo do tempo.
-
----
-
-## 2. Descrição do Dataset
-
-O projeto utiliza o **Our World in Data Energy Dataset**, base pública mantida pela Our World in Data.
-
-* **Arquivo base**: `data/raw/owid-energy-data.csv`
-* **Fonte pública**: `https://owid-public.owid.io/data/energy/owid-energy-data.csv`
-* **Conteúdo**: dados anuais por país, incluindo população, PIB e geração elétrica por fonte, como solar, eólica, hidrelétrica, carvão, gás, óleo, nuclear, biocombustíveis e outras renováveis.
+* **Institution:** Faculty of Technology of Jundiaí (FATEC Jundiaí)
+* **Course:** Database and Data Warehouse in Data Science
+* **Professor:** Rafael Gross
+* **Authors:**
+    * Rodolfo Vinicius Cima Takemoto
+    * Tiago Galhardo Avelar
 
 ---
 
-## 3. Objetivo
+## 1. Problem Description
 
-O objetivo geral é construir um Data Warehouse completo em **DuckDB**, com pipeline SQL e Python, para analisar a evolução da geração elétrica por fonte de energia.
+The global energy transition requires tracking historical electricity generation from different energy sources. However, public energy datasets are usually in a wide format with many columns per source, making comparative analysis, historical queries, and building country-level indicators by year and source type highly complex.
 
-O grão da tabela fato principal é:
-
-> Uma linha por país, ano e fonte de energia.
+This project organizes these data points into a **dimensional Data Warehouse**, allowing analysis of the evolution of renewable, fossil, and low-carbon electricity generation across countries and over time.
 
 ---
 
-## 4. Metodologia
+## 2. Dataset Description
 
-O desenvolvimento do projeto seguiu as etapas abaixo:
+The project uses the **Our World in Data Energy Dataset**, a public database maintained by Our World in Data.
 
-1. **Ingestão dos dados brutos**: leitura do CSV original para a camada de staging.
-2. **Normalização intermediária**: transformação da base ampla em estrutura longa na camada OLTP.
-3. **Modelagem dimensional**: criação de dimensões e tabela fato em modelo estrela.
-4. **Carga do Data Warehouse**: execução de pipeline SQL idempotente em DuckDB.
-5. **Historização de país**: implementação de SCD Type 2 na dimensão `dw.dim_country`.
-6. **Consultas analíticas**: criação de consultas para análise temporal, ranking, agregação multidimensional, cohort e KPI.
-7. **Validações**: checagem de contagens, chaves estrangeiras, integridade e totais por fonte.
-8. **Visualizações**: geração de gráficos, dashboard HTML e relatório técnico em PDF.
+* **Base file:** `data/raw/owid-energy-data.csv`
+* **Public source:** `https://owid-public.owid.io/data/energy/owid-energy-data.csv`
+* **Content:** Annual data by country including population, GDP, and electricity generation by source (solar, wind, hydro, coal, gas, oil, nuclear, biofuels, and other renewables).
 
 ---
 
-## 5. Modelagem Dimensional
+## 3. Objective
 
-O Data Warehouse utiliza um modelo estrela com três dimensões principais e uma tabela fato central.
+The general objective is to build a complete Data Warehouse in **DuckDB**, using a Python and SQL pipeline, to analyze the evolution of electricity generation by energy source.
 
-| Objeto | Descrição |
+The grain of the main fact table is:
+> One row per country, year, and energy source.
+
+---
+
+## 4. Methodology
+
+Project development followed the stages below:
+1. **Raw Data Ingestion:** Loading the original CSV into the staging layer.
+2. **Intermediate Normalization:** Transforming the wide structure into a long structure in the OLTP layer.
+3. **Dimensional Modeling:** Creating dimensions and the fact table in a star schema.
+4. **Data Warehouse Load:** Executing an idempotent SQL pipeline in DuckDB.
+5. **Country Historization:** Implementing SCD Type 2 on the `dw.dim_country` dimension.
+6. **Analytical Queries:** Building queries for temporal analysis, ranking, multidimensional aggregation, cohort, and KPI.
+7. **Validations:** Checking counts, foreign keys, integrity, and totals per source.
+8. **Visualizations:** Generating graphs, an HTML dashboard, and a technical PDF report.
+
+---
+
+## 5. Dimensional Modeling
+
+The Data Warehouse uses a star schema with three main dimensions and one central fact table.
+
+| Object | Description |
 | :--- | :--- |
-| `dw.dim_date` | Dimensão de tempo, com ano, década e indicadores de ano atual e ano mais recente do dataset. |
-| `dw.dim_country` | Dimensão de país com SCD Type 2, controlando mudanças de faixa populacional e PIB per capita. |
-| `dw.dim_energy_source` | Dimensão de fonte energética, classificando as fontes em renováveis, fósseis e baixo carbono. |
-| `dw.fact_energy_generation` | Tabela fato com geração elétrica em TWh, participação percentual, população e PIB. |
-| `dw.fact_energy_generation_annual_grouped` | Tabela agregada para comparação de performance. |
+| `dw.dim_date` | Time dimension with year, decade, and indicators for the current and most recent year. |
+| `dw.dim_country` | Country dimension with SCD Type 2, tracking changes in population brackets and GDP per capita. |
+| `dw.dim_energy_source` | Energy source dimension, classifying sources into renewables, fossils, and low-carbon. |
+| `dw.fact_energy_generation` | Fact table with electricity generation in TWh, percentage share, population, and GDP. |
+| `dw.fact_energy_generation_annual_grouped` | Aggregated table for performance comparison. |
 
 ---
 
-## 6. Consultas Analíticas
+## 6. Analytical Queries
 
-O projeto entrega cinco consultas analíticas principais:
-
-1. **Evolução temporal** da geração solar, eólica e hidrelétrica no Brasil.
-2. **Ranking Top 10** de países com maior geração renovável no ano mais recente.
-3. **Agregação multidimensional** por país, ano e grupo de fonte.
-4. **Cohort/retenção** de países que ultrapassaram 1% de geração solar.
-5. **KPI de negócio** com percentual de geração renovável sobre o total modelado.
+The project delivers five main analytical queries:
+1. **Temporal evolution** of solar, wind, and hydro generation in Brazil.
+2. **Top 10 Ranking** of countries with the highest renewable generation in the most recent year.
+3. **Multidimensional aggregation** by country, year, and source group.
+4. **Cohort/retention** of countries that surpassed 1% of solar generation.
+5. **Business KPI** measuring the percentage of renewable generation over the modeled total.
 
 ---
 
-## 7. Resultados e Entregáveis
+## 7. Results and Deliverables
 
-Os principais artefatos gerados pelo projeto estão organizados da seguinte forma:
+The main artifacts generated by the project are organized as follows:
 
-| Caminho | Conteúdo |
+| Path | Content |
 | :--- | :--- |
-| `database/energy_dw.duckdb` | Banco DuckDB com o Data Warehouse. |
-| `docs/relatorio_tecnico.pdf` | Relatório técnico acadêmico em PDF. |
-| `docs/relatorio_tecnico.md` | Relatório técnico em Markdown. |
-| `docs/dicionario_dados.md` | Dicionário de dados. |
-| `docs/diagrama_modelo_estrela.md` | Documentação do modelo estrela. |
-| `docs/diagrama_modelo_estrela.png` | Diagrama visual do modelo estrela. |
-| `docs/roteiro_apresentacao.md` | Roteiro de apresentação. |
-| `outputs/dashboard.html` | Dashboard HTML. |
-| `outputs/figures/` | Gráficos gerados. |
-| `outputs/queries/` | Consultas analíticas e validações exportadas. |
+| `database/energy_dw.duckdb` | DuckDB database containing the Data Warehouse. |
+| `docs/relatorio_tecnico.pdf` | Academic technical report in PDF. |
+| `docs/relatorio_tecnico.md` | Technical report in Markdown. |
+| `docs/dicionario_dados.md` | Data dictionary. |
+| `docs/diagrama_modelo_estrela.md` | Star schema model documentation. |
+| `docs/diagrama_modelo_estrela.png` | Visual diagram of the star schema. |
+| `docs/roteiro_apresentacao.md` | Presentation script. |
+| `outputs/dashboard.html` | HTML Dashboard. |
+| `outputs/figures/` | Generated charts. |
+| `outputs/queries/` | Exported analytical and validation queries. |
 
 ---
 
-## 8. Execução
+## 8. Execution
 
 ```bash
 pip install -r requirements.txt
 python run_all.py
 ```
 
-Ao final da execução, o pipeline gera o banco DuckDB, exporta as consultas, cria os gráficos e abre automaticamente o dashboard HTML no navegador padrão.
+Upon execution, the pipeline generates the DuckDB database, exports the queries, creates the charts, and automatically opens the HTML dashboard in the default browser.
