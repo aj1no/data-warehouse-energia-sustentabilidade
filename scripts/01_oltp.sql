@@ -1,6 +1,5 @@
 -- Projeto: Data Warehouse de Energia e Sustentabilidade
--- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
--- Entrega: 03/06/2026
+-- Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Etapa 01: cria uma camada OLTP normalizada/intermediária para simplificar o ETL dimensional.
 
 CREATE SCHEMA IF NOT EXISTS oltp;

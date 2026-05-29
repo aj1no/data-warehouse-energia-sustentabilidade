@@ -12,6 +12,7 @@
 * **Course:** Database and Data Warehouse in Data Science
 * **Professor:** Rafael Gross
 * **Authors:**
+    * Dalmir Doneda Júnior
     * Rodolfo Vinicius Cima Takemoto
     * Tiago Galhardo Avelar
 

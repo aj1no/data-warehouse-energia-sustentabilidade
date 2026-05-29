@@ -12,6 +12,7 @@
 * **Disciplina:** Banco e Armazém de Dados em Ciências de Dados
 * **Professor:** Rafael Gross
 * **Autores:**
+    * Dalmir Doneda Júnior
     * Rodolfo Vinicius Cima Takemoto
     * Tiago Galhardo Avelar
 

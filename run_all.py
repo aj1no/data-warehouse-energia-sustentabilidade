@@ -1,7 +1,6 @@
 """
 Projeto: Data Warehouse de Energia e Sustentabilidade
-Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
-Entrega: 03/06/2026
+Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 
 Orquestra o projeto completo: baixa o dataset real da Our World in Data,
 executa o pipeline SQL no DuckDB, exporta consultas, mede performance e gera
@@ -744,7 +743,7 @@ def generate_dashboard(
 <body>
   <header>
     <h1>Data Warehouse de Energia e Sustentabilidade</h1>
-    <p><strong>Autores:</strong> Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar</p>
+    <p><strong>Autores:</strong> Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar</p>
     <p><strong>Dataset:</strong> Our World in Data Energy Dataset</p>
   </header>
   <main>
@@ -840,7 +839,7 @@ def write_performance_summary(conn: duckdb.DuckDBPyConnection) -> None:
     gain = fact["avg_ms"] / agg["avg_ms"] if agg["avg_ms"] > 0 else float("nan")
     summary = f"""# Resultados de Performance
 
-Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
+Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 
 Medição gerada automaticamente por `run_all.py` a partir do dataset real da Our World in Data.
 

@@ -3,6 +3,7 @@
 
 <br/><br/><br/><br/>
 
+### DALMIR DONEDA JÚNIOR
 ### RODOLFO VINICIUS CIMA TAKEMOTO
 ### TIAGO GALHARDO AVELAR
 
@@ -18,6 +19,7 @@
 
 ---
 
+### DALMIR DONEDA JÚNIOR
 ### RODOLFO VINICIUS CIMA TAKEMOTO
 ### TIAGO GALHARDO AVELAR
 
@@ -88,8 +90,6 @@ A transição para matrizes de geração elétrica com menor intensidade de emis
 
 Neste contexto, o presente projeto acadêmico propõe a modelagem e a construção de um Data Warehouse (DW) robusto focado na análise da Matriz Energética Mundial. O objetivo geral é estabelecer um pipeline analítico ponta a ponta que processe os dados reais da *Our World in Data (OWID)*, estruture-os em um esquema dimensional estrela e produza análises fundamentadas sobre a evolução temporal, o ranking de liderança em energias limpas e o comportamento de cohorts de países na transição para fontes específicas, como a energia solar. O relatório a seguir é estruturado em padrão acadêmico inspirado nas normas ABNT, especialmente NBR 14724 e NBR 6023, documentando rigorosamente a arquitetura conceitual e física adotada.
 
----
-
 ## 2 FUNDAMENTAÇÃO TEÓRICA
 
 ### 2.1 Modelagem Dimensional de Kimball
@@ -106,8 +106,6 @@ A técnica de dimensões que sofrem alteração lenta (*Slowly Changing Dimensio
 ### 2.4 Banco de Dados Analítico DuckDB
 O DuckDB é um sistema de gerenciamento de banco de dados (SGBD) relacional voltado para processos analíticos (OLAP) de vetorização colunar em memória. Projetado para integração profunda com ambientes de programação Python e R, ele oferece execução SQL nativa veloz sobre dados tabulares estruturados, combinando a facilidade de implantação de um banco embarcado (como o SQLite) com o poder analítico de processamento de consultas com agregação rápida típicos de grandes plataformas corporativas.
 
----
-
 ## 3 METODOLOGIA E FONTE DE DADOS
 
 O pipeline utiliza o dataset unificado **Our World in Data Energy Dataset**, mantido publicamente e atualizado continuamente pela OWID. A extração dos dados brutos é feita via requisição HTTP direta ao arquivo CSV hospedado na infraestrutura pública da OWID:
@@ -119,8 +117,6 @@ A metodologia de desenvolvimento compreende as seguintes fases:
 2. **Transformação Estrutural (Pipeline SQL)**: Execução ordenada de 6 scripts SQL em lote no DuckDB. O fluxo limpa dados, normaliza tabelas e preenche as chaves substitutas no banco.
 3. **Carga e Medição**: População física da tabela fato e das tabelas dimensões no banco colunar, gerando dados analíticos limpos de forma idempotente.
 4. **Visualização e Publicação**: Geração automatizada de gráficos em vetor SVG e consolidação de um Dashboard HTML estático acoplado a relatórios em PDF.
-
----
 
 ## 4 MODELAGEM DIMENSIONAL DO DATA WAREHOUSE
 
@@ -142,8 +138,6 @@ A tabela fato armazena as seguintes variáveis quantitativas:
 - `electricity_share_pct`: Participação percentual que a fonte específica representa sobre o total de geração de eletricidade da localidade naquele ano.
 - `population` e `gdp`: Métricas demográficas e econômicas de contexto para a ponderação ponderada de indicadores socioeconômicos.
 
----
-
 ## 5 PIPELINE DE CARGA (ETL) E IDEMPOTÊNCIA
 
 O pipeline ETL foi projetado para rodar em lote e ser rigorosamente idempotente. Isso significa que, independentemente de quantas vezes o pipeline de carga for reexecutado, o estado final do Data Warehouse permanecerá consistente e sem duplicação física de registros nas tabelas dimensionais ou fatos.
@@ -156,8 +150,6 @@ O fluxo é sequenciado pelos scripts localizados no diretório `/scripts`:
 5. `04_analytics.sql`: Consolida os resultados das consultas analíticas e gera as tabelas de validação.
 6. `05_performance.sql`: Agrupa dados em tabelas físicas para aceleração de relatórios.
 
----
-
 ## 6 CONSULTAS ANALÍTICAS E KPIS DE NEGÓCIO
 
 Foram consolidadas cinco consultas analíticas obrigatórias materializadas no banco de dados analítico DuckDB:
@@ -167,8 +159,6 @@ Foram consolidadas cinco consultas analíticas obrigatórias materializadas no b
 - **Q3 - Agregação Multidimensional**: Agrupa a geração elétrica em TWh consolidando por grupo de fonte (Renováveis, Fósseis e Baixo Carbono) e por país para fins de comparação geopolítica.
 - **Q4 - Análise de Cohort e Retenção**: Identifica a data em que cada país rompeu o patamar de 1% de participação de energia solar na sua matriz e calcula a taxa de permanência acima dessa linha de corte nos anos subsequentes.
 - **Q5 - KPI de Participação Renovável**: Calcula o percentual ponderado de geração limpa em relação ao total modelado de energia de cada país, fornecendo um indicador do progresso rumo à descarbonização.
-
----
 
 ## 7 VISUALIZAÇÕES GRÁFICAS E DASHBOARD
 
@@ -184,8 +174,6 @@ A validação analítica gerou quatro visualizações obrigatórias salvas em fo
 
 ![Figura 4 - Heatmap da participação das fontes na eletricidade brasileira](outputs/figures/brazil_source_share_heatmap.png)
 
----
-
 ## 8 AVALIAÇÃO DE PERFORMANCE E OTIMIZAÇÃO
 
 Para otimizar o tempo de resposta das consultas corporativas de nível gerencial, foi criada a tabela agregada física `dw.fact_energy_generation_annual_grouped`, que pré-calcula a soma das gerações anuais agregadas por ano, país e grupo conceitual de fonte de energia.
@@ -197,8 +185,6 @@ Os dados obtidos empiricamente com o dataset real apontam:
 
 Isso representa um ganho médio de velocidade de **3,27 vezes** na renderização e recuperação de relatórios analíticos anuais agrupados.
 
----
-
 ## 9 RESULTADOS E VALIDAÇÃO DE QUALIDADE DE DADOS
 
 Para manter o rigor e a confiabilidade analítica exigida, foram estruturadas quatro consultas de teste e qualidade de dados materializadas em tabelas de auditoria:
@@ -207,15 +193,11 @@ Para manter o rigor e a confiabilidade analítica exigida, foram estruturadas qu
 3. **`validation_integrity`**: Detecta chaves órfãs na fato com buscas lógicas (left joins). O teste acusou zero órfãos nas conexões dimensionais.
 4. **`validation_generation_by_source`**: Verifica se as somas brutas das fontes fecham com as quantidades consolidadas na extração primária.
 
----
-
 ## 10 CONCLUSÃO
 
 O presente projeto demonstrou a viabilidade prática da construção de um Data Warehouse de alto desempenho focado em transição energética e sustentabilidade. Através da modelagem estrela de Kimball e da implementação física sobre o SGBD DuckDB, foi possível extrair dados brutos e não estruturados da Our World in Data, limpá-los por meio de staging, transpor métricas via camadas intermediárias e carregá-los de forma consistente, preservando o histórico geográfico via SCD Tipo 2.
 
 Os testes de qualidade e consistência física evidenciaram um DW confiável, seguro para reexecuções e ágil, com ganhos expressivos de performance através do uso de tabelas agregadas. A estruturação acadêmica do relatório técnico com foco nas principais teorias e nas normas indicativas contribui para a clareza expositiva do artefato de engenharia de dados entregue.
-
----
 
 ## REFERÊNCIAS
 

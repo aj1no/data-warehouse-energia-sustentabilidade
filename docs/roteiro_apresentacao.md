@@ -1,9 +1,8 @@
 # Roteiro de Apresentação
 
-**Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
+**Autores:** Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Projeto:** Data Warehouse de Energia e Sustentabilidade  
 **Duração estimada:** 10 a 15 minutos  
-**Data de entrega:** 03/06/2026
 
 ## 1. Abertura e Problema de Negócio (1 minuto)
 

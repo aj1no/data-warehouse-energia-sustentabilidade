@@ -1,6 +1,5 @@
 -- Projeto: Data Warehouse de Energia e Sustentabilidade
--- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
--- Entrega: 03/06/2026
+-- Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Etapa 03: carrega dimensões e fato. A dim_country implementa SCD Type 2 por faixas.
 
 INSERT INTO dw.dim_date (

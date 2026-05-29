@@ -1,6 +1,5 @@
 -- Projeto: Data Warehouse de Energia e Sustentabilidade
--- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
--- Entrega: 03/06/2026
+-- Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Etapa 00: cria a camada staging a partir do CSV original da Our World in Data.
 
 CREATE SCHEMA IF NOT EXISTS stg;

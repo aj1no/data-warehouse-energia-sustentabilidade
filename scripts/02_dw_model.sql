@@ -1,6 +1,5 @@
 -- Projeto: Data Warehouse de Energia e Sustentabilidade
--- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
--- Entrega: 03/06/2026
+-- Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Etapa 02: define o modelo dimensional em estrela no schema dw.
 
 CREATE SCHEMA IF NOT EXISTS dw;

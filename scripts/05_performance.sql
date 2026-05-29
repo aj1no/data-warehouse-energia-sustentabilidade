@@ -1,6 +1,5 @@
 -- Projeto: Data Warehouse de Energia e Sustentabilidade
--- Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
--- Entrega: 03/06/2026
+-- Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 -- Etapa 05: cria tabela agregada anual e consultas de referência para comparação de performance.
 
 CREATE OR REPLACE TABLE dw.fact_energy_generation_annual_grouped AS

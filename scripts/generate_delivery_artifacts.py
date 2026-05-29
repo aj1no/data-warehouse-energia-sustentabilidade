@@ -1,7 +1,6 @@
 """
 Projeto: Data Warehouse de Energia e Sustentabilidade
-Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
-Entrega: 03/06/2026
+Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar
 
 Gera artefatos finais de entrega pelo GitHub, com arquivos normalizados:
 - docs/relatorio_tecnico.pdf
@@ -96,7 +95,7 @@ def markdown_table_to_reportlab(lines: list[str], styles) -> Table:
     return table
 
 
-def report_image_flowable(path: Path, max_width: float = 15.5 * cm, max_height: float = 8.0 * cm) -> ReportImage:
+def report_image_flowable(path: Path, max_width: float = 13.5 * cm, max_height: float = 6.0 * cm) -> ReportImage:
     with Image.open(path) as image:
         width, height = image.size
     scale = min(max_width / width, max_height / height, 1)
@@ -146,21 +145,21 @@ def generate_report_pdf() -> None:
     styles["Heading2"].leading = 16
     styles["Heading2"].fontName = "Helvetica-Bold"
     styles["Heading2"].firstLineIndent = 0
-    styles["Heading2"].spaceBefore = 14
-    styles["Heading2"].spaceAfter = 8
+    styles["Heading2"].spaceBefore = 10
+    styles["Heading2"].spaceAfter = 4
 
     styles["Heading3"].fontSize = 12
     styles["Heading3"].leading = 16
     styles["Heading3"].fontName = "Helvetica-BoldOblique"
     styles["Heading3"].firstLineIndent = 0
-    styles["Heading3"].spaceBefore = 12
-    styles["Heading3"].spaceAfter = 6
+    styles["Heading3"].spaceBefore = 8
+    styles["Heading3"].spaceAfter = 3
 
     styles["BodyText"].fontSize = 12
     styles["BodyText"].leading = 18 # Espacamento 1.5 (12 * 1.5 = 18)
     styles["BodyText"].alignment = 4 # Justificado
     styles["BodyText"].firstLineIndent = 1.25 * cm
-    styles["BodyText"].spaceAfter = 8
+    styles["BodyText"].spaceAfter = 5
 
     # Novos estilos customizados
     styles.add(ParagraphStyle(
@@ -236,7 +235,7 @@ def generate_report_pdf() -> None:
         # Espacadores verticais
         if "<br/>" in line:
             count = line.count("<br/>")
-            story.append(Spacer(1, count * 0.5 * cm))
+            story.append(Spacer(1, count * 0.45 * cm))
             i += 1
             continue
 
@@ -338,7 +337,7 @@ def generate_report_pdf() -> None:
         topMargin=3.0 * cm,
         bottomMargin=2.0 * cm,
         title="Relatório Técnico - Data Warehouse de Energia e Sustentabilidade",
-        author="Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar",
+        author="Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar",
     )
     doc.build(story, canvasmaker=NumberedCanvas)
 
@@ -593,7 +592,7 @@ def generate_star_schema_png() -> None:
     )
     draw.text(
         (60, 92),
-        "Autores: Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar",
+        "Autores: Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar",
         font=get_font(22),
         fill="#526171",
     )

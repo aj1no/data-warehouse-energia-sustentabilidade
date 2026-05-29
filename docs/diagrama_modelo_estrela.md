@@ -1,8 +1,7 @@
 # Diagrama do Modelo Estrela
 
-**Autores:** Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
+**Autores:** Dalmir Doneda Júnior; Rodolfo Vinicius Cima Takemoto; Tiago Galhardo Avelar  
 **Projeto:** Data Warehouse de Energia e Sustentabilidade  
-**Data de entrega:** 03/06/2026
 
 ```mermaid
 erDiagram
